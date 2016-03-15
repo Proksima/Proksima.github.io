@@ -46,16 +46,21 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/shells/lib.rs.html#1-87' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/shells/lib.rs.html#1-92' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Wrapper around std::process::Command which make the use of Rust for shell scripting more
 appealing.</p>
 
 <h2 id='simple-example' class='section-header'><a href='#simple-example'>Simple example</a></h2><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>shells</span>;
+
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
     <span class='kw'>let</span> (<span class='ident'>code</span>, <span class='ident'>stdout</span>, <span class='ident'>stderr</span>) <span class='op'>=</span> <span class='macro'>sh</span><span class='macro'>!</span>(<span class='string'>&quot;echo &#39;{} + {}&#39; | bc&quot;</span>, <span class='number'>1</span>, <span class='number'>3</span>);
 
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>code</span>, <span class='number'>0</span>);
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stdout</span>[..], <span class='string'>&quot;4&quot;</span>);
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stderr</span>[..], <span class='string'>&quot;&quot;</span>);</pre>
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stdout</span>[..], <span class='string'>&quot;4\n&quot;</span>);
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stderr</span>[..], <span class='string'>&quot;&quot;</span>);
+}</pre>
 
 <p>A mnemotechnic to remember the ordering of the elements in the resulting tuple is the positions
 of stdout and stderr, they correspond to the standard streams numbers: 1 and 2 respectively.</p>
