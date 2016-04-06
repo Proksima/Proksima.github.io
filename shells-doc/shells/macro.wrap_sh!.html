@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `mksh!` macro in crate `shells`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, mksh!">
+    <meta name="description" content="API documentation for the Rust `wrap_sh!` macro in crate `shells`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, wrap_sh!">
 
-    <title>shells::mksh! - Rust</title>
+    <title>shells::wrap_sh! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>shells</a></p><script>window.sidebarCurrent = {name: 'mksh!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>shells</a></p><script>window.sidebarCurrent = {name: 'wrap_sh!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,16 +42,17 @@
     </nav>
 
     <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>shells</a>::<wbr><a class='macro' href=''>mksh!</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'><a href='index.html'>shells</a>::<wbr><a class='macro' href=''>wrap_sh!</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-66' class='srclink' href='../src/shells/lib.rs.html#134-138' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-68' class='srclink' href='../src/shells/lib.rs.html#153-167' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>mksh</span> {
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>wrap_sh</span> {
     ( $( <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>cmd</span>:<span class='ident'>tt</span> )<span class='op'>*</span> ) <span class='op'>=&gt;</span> { ... };
 }</pre>
-<div class='docblock'><p>Macro to execute the given command using the MirBSD Korn Shell.</p>
+<div class='docblock'><p>Macro to execute the given command using the Posix Shell and wraping the resulting tuple into a
+Result.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 

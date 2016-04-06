@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/shells/lib.rs.html#1-92' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/shells/lib.rs.html#1-366' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Wrapper around std::process::Command which make the use of Rust for shell scripting more
 appealing.</p>
 
@@ -55,17 +55,23 @@ appealing.</p>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>shells</span>;
 
 <span class='kw'>fn</span> <span class='ident'>main</span>() {
-    <span class='kw'>let</span> (<span class='ident'>code</span>, <span class='ident'>stdout</span>, <span class='ident'>stderr</span>) <span class='op'>=</span> <span class='macro'>sh</span><span class='macro'>!</span>(<span class='string'>&quot;echo &#39;{} + {}&#39; | bc&quot;</span>, <span class='number'>1</span>, <span class='number'>3</span>);
+    <span class='kw'>let</span> (<span class='ident'>code</span>, <span class='ident'>stdout</span>, <span class='ident'>stderr</span>) <span class='op'>=</span> <span class='macro'>sh</span><span class='macro'>!</span>(<span class='string'>&quot;echo &#39;{} + {}&#39; | cat&quot;</span>, <span class='number'>1</span>, <span class='number'>3</span>);
 
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>code</span>, <span class='number'>0</span>);
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stdout</span>[..], <span class='string'>&quot;4\n&quot;</span>);
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stdout</span>[..], <span class='string'>&quot;1 + 3\n&quot;</span>);
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>stderr</span>[..], <span class='string'>&quot;&quot;</span>);
+
+    <span class='comment'>// Using the new `wrap_*` macros.</span>
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>wrap_sh</span><span class='macro'>!</span>(<span class='string'>&quot;echo &#39;{} + {}&#39; | cat&quot;</span>, <span class='number'>1</span>, <span class='number'>3</span>).<span class='ident'>unwrap</span>(), <span class='string'>&quot;1 + 3\n&quot;</span>);
 }</pre>
 
 <p>A mnemotechnic to remember the ordering of the elements in the resulting tuple is the positions
 of stdout and stderr, they correspond to the standard streams numbers: 1 and 2 respectively.</p>
 
-<p>If I a missing your favorite (at least partially) POSIX-compliant shell, submit a pull request!</p>
+<p>The implementation for all the different shells is the same: the arguments of the macro is
+passed directly to <code>format!</code> and the resulting string is passed to the shell using its &#39;-c&#39;
+command line option. Thus you can use <code>sh!</code> and friends the same way you would use <code>format!</code> or
+<code>println!</code>.</p>
 </div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table>
                     <tr class=' module-item'>
@@ -150,10 +156,133 @@ of stdout and stderr, they correspond to the standard streams numbers: 1 and 2 r
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_ash!.html'
+                               title='shells::wrap_ash!'>wrap_ash!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Almquist Shell and wraping the resulting tuple
+into a Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_bash!.html'
+                               title='shells::wrap_bash!'>wrap_bash!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Bourne Again Shell and wraping the resulting tuple
+into a Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_csh!.html'
+                               title='shells::wrap_csh!'>wrap_csh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the C Shell and wraping the resulting tuple into a
+Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_dash!.html'
+                               title='shells::wrap_dash!'>wrap_dash!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Debian Almquist Shell and wraping the resulting
+tuple into a Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_fish!.html'
+                               title='shells::wrap_fish!'>wrap_fish!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Fish Shell and wraping the resulting tuple into a
+Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_ksh!.html'
+                               title='shells::wrap_ksh!'>wrap_ksh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Korn Shell and wraping the resulting tuple into a
+Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_mksh!.html'
+                               title='shells::wrap_mksh!'>wrap_mksh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the MirBSD Korn Shell and wraping the resulting tuple
+into a Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_sh!.html'
+                               title='shells::wrap_sh!'>wrap_sh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Posix Shell and wraping the resulting tuple into a
+Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_tcsh!.html'
+                               title='shells::wrap_tcsh!'>wrap_tcsh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the TENEX C Shell and wraping the resulting tuple into
+a Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.wrap_zsh!.html'
+                               title='shells::wrap_zsh!'>wrap_zsh!</a></td>
+                        <td class='docblock short'>
+                             <p>Macro to execute the given command using the Z Shell and wraping the resulting tuple into a
+Result.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='macro' href='macro.zsh!.html'
                                title='shells::zsh!'>zsh!</a></td>
                         <td class='docblock short'>
                              <p>Macro to execute the given command using the Z Shell.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Error.html'
+                               title='shells::Error'>Error</a></td>
+                        <td class='docblock short'>
+                             <p>Struct holding the resulting environment after executing a failed command with the <code>wrap_*</code>
+family of macros. It implements the Error trait and its implementation of the Display trait is
+identical to the implementation of the Display trait of its <code>stderr</code> field.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.Result.html'
+                               title='shells::Result'>Result</a></td>
+                        <td class='docblock short'>
+                             <p>Type returned by the <code>wrap_*</code> family of macros. Will either be <code>Ok(stdout)</code> or an error
+containing code, stdout and stderr resulting from executing the command.</p>
 
                         </td>
                     </tr>

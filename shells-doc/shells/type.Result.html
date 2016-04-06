@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `mksh!` macro in crate `shells`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, mksh!">
+    <meta name="description" content="API documentation for the Rust `Result` type in crate `shells`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Result">
 
-    <title>shells::mksh! - Rust</title>
+    <title>shells::Result - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>shells</a></p><script>window.sidebarCurrent = {name: 'mksh!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>shells</a></p><script>window.sidebarCurrent = {name: 'Result', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,17 +41,14 @@
         </form>
     </nav>
 
-    <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>shells</a>::<wbr><a class='macro' href=''>mksh!</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>shells</a>::<wbr><a class='type' href=''>Result</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-66' class='srclink' href='../src/shells/lib.rs.html#134-138' title='goto source code'>[src]</a></span></h1>
-<pre class='rust macro'>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>mksh</span> {
-    ( $( <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>cmd</span>:<span class='ident'>tt</span> )<span class='op'>*</span> ) <span class='op'>=&gt;</span> { ... };
-}</pre>
-<div class='docblock'><p>Macro to execute the given command using the MirBSD Korn Shell.</p>
+        </span><a id='src-4' class='srclink' href='../src/shells/lib.rs.html#34' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type Result = <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>, <a class='struct' href='../shells/struct.Error.html' title='shells::Error'>Error</a>&gt;;</pre><div class='docblock'><p>Type returned by the <code>wrap_*</code> family of macros. Will either be <code>Ok(stdout)</code> or an error
+containing code, stdout and stderr resulting from executing the command.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 
