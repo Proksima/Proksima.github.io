@@ -1,0 +1,1 @@
+initSidebarItems({"static":[["QUANDL_API_URL","Quandl API URL used as the base URL for all queries."]],"trait":[["ApiCall","Trait allowing implementers to submit a request through the Quandl API."]]});

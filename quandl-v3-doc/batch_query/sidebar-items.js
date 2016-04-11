@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["batch_query","Submit multiple queries at the same time."]],"struct":[["Iterator","Iterator returned by the `batch_query` function."]]});
