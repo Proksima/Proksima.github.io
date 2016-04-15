@@ -242,10 +242,6 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! ## Rust bindings for Quandl v3 API.</span>
 <span class='doccomment'>//!</span>
@@ -263,10 +259,6 @@
 <span class='doccomment'>//!   API. The deserializer need the names to match to work properly, thus you will see</span>
 <span class='doccomment'>//!   `Order::asc` instead of the more readable `Order::Ascending`.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! * The `Data` and `DataAndMetadata` structs are messy because it needs to match the</span>
-<span class='doccomment'>//!   serialization returned by Quandl. If it wasn&#39;t of this limitation the `DatasetMetadata`</span>
-<span class='doccomment'>//!   struct would be reused and the fields would be better organized.</span>
-<span class='doccomment'>//!</span>
 <span class='doccomment'>//! Some other design choices of this crate includes</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! * No runtime checking of the query created. This crate makes it as hard as statically possible</span>
@@ -278,9 +270,10 @@
 <span class='doccomment'>//!   same time. The function returns an iterator which gives the benefit of multithreading</span>
 <span class='doccomment'>//!   downloads and asynchronicity which are indispensable when doing data mining.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! The only other missing feature is the ability to query an entire premium database in a single</span>
-<span class='doccomment'>//! API call. Unfortunately I do not have access to any premium database and thus wouldn&#39;t have</span>
-<span class='doccomment'>//! been able to test the resulting code.</span>
+<span class='doccomment'>//! * We use the JSON Quandl API for everything but data queries as it often returns more</span>
+<span class='doccomment'>//!   information. When it comes to the data queries we use the CSV subset of the API as it is</span>
+<span class='doccomment'>//!   faster and allows to use the `rust-csv` crates which allow you to define your own structs to</span>
+<span class='doccomment'>//!   receive the data.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ### Simple example</span>
 <span class='doccomment'>//!</span>
@@ -302,14 +295,13 @@
 <span class='doccomment'>//!          query</span>
 <span class='doccomment'>//!     };</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//!     let response: Result&lt;Data&lt;(String, f64)&gt;&gt; = query.send().unwrap();</span>
+<span class='doccomment'>//!     let response: Vec&lt;(String, f64)&gt; = query.send().unwrap();</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!     // Print the date and closing price for Apple&#39;s stock for the month of February 2016.</span>
-<span class='doccomment'>//!     for data in &amp;response.data {</span>
+<span class='doccomment'>//!     for data in &amp;response {</span>
 <span class='doccomment'>//!         println!(&quot;{} - {}&quot;, data.0, data.1);</span>
 <span class='doccomment'>//!     }</span>
 <span class='doccomment'>//! }</span>
-<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! This crate is written in the hope it will be useful. I am in no way affiliated to Quandl and</span>

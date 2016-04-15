@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/damien/.multirust/toolchains/stable/cargo/registry/src/github.com-88ac128001ac3a9a/openssl-0.7.8/src/ssl/mod.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/dlevac/.multirust/toolchains/stable/cargo/registry/src/github.com-88ac128001ac3a9a/openssl-0.7.9/src/ssl/mod.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>mod.rs.html -- source</title>
@@ -1697,6 +1697,8 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span>;
 
+<span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>bio</span>::<span class='ident'>BioMethod</span>;
+
 <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>inline</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ssl</span>::<span class='ident'>error</span>::<span class='ident'>Error</span>;
 
@@ -2489,7 +2491,7 @@
             <span class='kw'>let</span> <span class='ident'>desc_ptr</span> <span class='op'>=</span> <span class='ident'>ffi</span>::<span class='ident'>SSL_CIPHER_description</span>(<span class='self'>self</span>.<span class='ident'>cipher</span>, <span class='ident'>buf</span>.<span class='ident'>as_mut_ptr</span>(), <span class='number'>128</span>);
 
             <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>desc_ptr</span>.<span class='ident'>is_null</span>() {
-                <span class='ident'>String</span>::<span class='ident'>from_utf8</span>(<span class='ident'>CStr</span>::<span class='ident'>from_ptr</span>(<span class='ident'>desc_ptr</span>).<span class='ident'>to_bytes</span>().<span class='ident'>to_vec</span>()).<span class='ident'>ok</span>()
+                <span class='ident'>String</span>::<span class='ident'>from_utf8</span>(<span class='ident'>CStr</span>::<span class='ident'>from_ptr</span>(<span class='ident'>desc_ptr</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> _).<span class='ident'>to_bytes</span>().<span class='ident'>to_vec</span>()).<span class='ident'>ok</span>()
             } <span class='kw'>else</span> {
                 <span class='prelude-val'>None</span>
             }
@@ -2779,11 +2781,9 @@
 <span class='doccomment'>/// A stream wrapper which handles SSL encryption for an underlying stream.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SslStream</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span> {
     <span class='ident'>ssl</span>: <span class='ident'>Ssl</span>,
-    <span class='ident'>_method</span>: <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>ffi</span>::<span class='ident'>BIO_METHOD</span><span class='op'>&gt;</span>, <span class='comment'>// NOTE: this *must* be after the Ssl field so things drop right</span>
+    <span class='ident'>_method</span>: <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>BioMethod</span><span class='op'>&gt;</span>, <span class='comment'>// NOTE: this *must* be after the Ssl field so things drop right</span>
     <span class='ident'>_p</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span>,
 }
-
-<span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>Send</span><span class='op'>&gt;</span> <span class='ident'>Send</span> <span class='kw'>for</span> <span class='ident'>SslStream</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span> {}
 
 <span class='doccomment'>/// # Deprecated</span>
 <span class='doccomment'>///</span>

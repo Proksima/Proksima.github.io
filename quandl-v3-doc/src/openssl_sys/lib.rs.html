@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/damien/.multirust/toolchains/stable/cargo/registry/src/github.com-88ac128001ac3a9a/openssl-sys-0.7.8/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/dlevac/.multirust/toolchains/stable/cargo/registry/src/github.com-88ac128001ac3a9a/openssl-sys-0.7.9/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -813,10 +813,11 @@
 <span id="770">770</span>
 <span id="771">771</span>
 <span id="772">772</span>
+<span id="773">773</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>, <span class='ident'>non_upper_case_globals</span>, <span class='ident'>non_snake_case</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>dead_code</span>)]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>doc</span>(<span class='ident'>html_root_url</span><span class='op'>=</span><span class='string'>&quot;https://sfackler.github.io/rust-openssl/doc/v0.7.8&quot;</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>doc</span>(<span class='ident'>html_root_url</span><span class='op'>=</span><span class='string'>&quot;https://sfackler.github.io/rust-openssl/doc/v0.7.9&quot;</span>)]</span>
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>libc</span>;
 
@@ -1364,6 +1365,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_new</span>() <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_free</span>(<span class='ident'>k</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>);
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_assign</span>(<span class='ident'>pkey</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>, <span class='ident'>typ</span>: <span class='ident'>c_int</span>, <span class='ident'>key</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>c_void</span>) <span class='op'>-&gt;</span> <span class='ident'>c_int</span>;
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_copy_parameters</span>(<span class='ident'>to</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>, <span class='ident'>from</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>EVP_PKEY</span>) <span class='op'>-&gt;</span> <span class='ident'>c_int</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_get1_RSA</span>(<span class='ident'>k</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>) <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>RSA</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_set1_RSA</span>(<span class='ident'>k</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>EVP_PKEY</span>, <span class='ident'>r</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>RSA</span>) <span class='op'>-&gt;</span> <span class='ident'>c_int</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>EVP_PKEY_cmp</span>(<span class='ident'>a</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>EVP_PKEY</span>, <span class='ident'>b</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>EVP_PKEY</span>) <span class='op'>-&gt;</span> <span class='ident'>c_int</span>;
