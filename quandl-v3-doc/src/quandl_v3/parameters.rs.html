@@ -9,13 +9,15 @@
 
     <title>parameters.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -41,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -276,251 +278,239 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>has</span>::<span class='op'>*</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">has</span>::<span class="kw-2">*</span>;
 
-<span class='kw'>use</span> <span class='ident'>types</span>::{<span class='ident'>Order</span>, <span class='ident'>Frequency</span>, <span class='ident'>Transform</span>};
+<span class="kw">use</span> <span class="ident">types</span>::{<span class="ident">Order</span>, <span class="ident">Frequency</span>, <span class="ident">Transform</span>};
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Default</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ApiArguments</span> {
-    <span class='ident'>api_key</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApiArguments</span> {
+    <span class="kw">pub</span> <span class="ident">api_key</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Default</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SearchArguments</span> {
-    <span class='ident'>keywords</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
-    <span class='ident'>per_page</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
-    <span class='ident'>page</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SearchArguments</span> {
+    <span class="ident">keywords</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="ident">per_page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Default</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DataArguments</span> {
-    <span class='ident'>rows</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
-    <span class='ident'>limit</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
-    <span class='ident'>order</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Order</span><span class='op'>&gt;</span>,
-    <span class='ident'>collapse</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Frequency</span><span class='op'>&gt;</span>,
-    <span class='ident'>transform</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Transform</span><span class='op'>&gt;</span>,
-    <span class='ident'>end_date</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>u16</span>, <span class='ident'>u8</span>, <span class='ident'>u8</span>)<span class='op'>&gt;</span>,
-    <span class='ident'>start_date</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>u16</span>, <span class='ident'>u8</span>, <span class='ident'>u8</span>)<span class='op'>&gt;</span>,
-    <span class='ident'>column_index</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DataArguments</span> {
+    <span class="ident">rows</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">order</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Order</span><span class="op">&gt;</span>,
+    <span class="ident">collapse</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Frequency</span><span class="op">&gt;</span>,
+    <span class="ident">transform</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Transform</span><span class="op">&gt;</span>,
+    <span class="ident">end_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">u16</span>, <span class="ident">u8</span>, <span class="ident">u8</span>)<span class="op">&gt;</span>,
+    <span class="ident">start_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">u16</span>, <span class="ident">u8</span>, <span class="ident">u8</span>)<span class="op">&gt;</span>,
+    <span class="ident">column_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class='doccomment'>/// Api parameters implemented by all queries.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#api-keys)</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ApiParameters</span>: <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>ApiArguments</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Include your personal Quandl API key with your query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>api_key</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>api_key</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>ApiArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>api_key</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>api_key</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>());
-        <span class='self'>self</span>
+<span class="doccomment">/// Api parameters implemented by all queries.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ApiParameters</span>: <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">ApiArguments</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Include your personal Quandl API key with your query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">api_key</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">api_key</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">ApiArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">api_key</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">api_key</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>());
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Return a string which will be appended to the query&#39;s URL given that an api key has been</span>
-    <span class='doccomment'>/// provided.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>key</span>) <span class='op'>=</span> <span class='ident'>Has</span>::<span class='op'>&lt;</span><span class='ident'>ApiArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_ref</span>(<span class='self'>self</span>).<span class='ident'>api_key</span> {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_key={}&quot;</span>, <span class='ident'>key</span>))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>None</span>
+    <span class="doccomment">/// Return a string which will be appended to the query&#39;s URL given that an api key has been</span>
+    <span class="doccomment">/// provided.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">key</span>) <span class="op">=</span> <span class="ident">Has</span>::<span class="op">&lt;</span><span class="ident">ApiArguments</span><span class="op">&gt;</span>::<span class="ident">get_ref</span>(<span class="self">self</span>).<span class="ident">api_key</span> {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api_key={}&quot;</span>, <span class="ident">key</span>))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
         }
     }
 }
 
-<span class='doccomment'>/// Search parameters implemented by search queries.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#database-search)</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>SearchParameters</span>: <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>SearchArguments</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Specify a vector/list of search keywords to retrieve only database/dataset related to those</span>
-    <span class='doccomment'>/// search terms.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>query</span><span class='op'>&lt;</span><span class='ident'>V</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span>[<span class='ident'>S</span>]<span class='op'>&gt;</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>keywords</span>: <span class='ident'>V</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>SearchArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>keywords</span> <span class='op'>=</span> {
-            <span class='ident'>keywords</span>.<span class='ident'>as_ref</span>().<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>as_ref</span>().<span class='ident'>trim</span>().<span class='ident'>to_string</span>()).<span class='ident'>collect</span>()
+<span class="doccomment">/// Search parameters implemented by search queries.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SearchParameters</span>: <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">SearchArguments</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Specify a vector/list of search keywords to retrieve only database/dataset related to those</span>
+    <span class="doccomment">/// search terms.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">query</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">S</span>]<span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">keywords</span>: <span class="ident">V</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">SearchArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">keywords</span> <span class="op">=</span> {
+            <span class="ident">keywords</span>.<span class="ident">as_ref</span>().<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ref</span>().<span class="ident">trim</span>().<span class="ident">to_string</span>()).<span class="ident">collect</span>()
         };
 
-        <span class='self'>self</span>
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify how many entries should be returned by search query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>per_page</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>SearchArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>per_page</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify how many entries should be returned by search query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">per_page</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">SearchArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">per_page</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Given there is more than one page of entries to be returned, specify which page we want to</span>
-    <span class='doccomment'>/// query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>page</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>SearchArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>page</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Given there is more than one page of entries to be returned, specify which page we want to</span>
+    <span class="doccomment">/// query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">page</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">SearchArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">page</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Return a string which will be appended to the query&#39;s URL given that at least one of the</span>
-    <span class='doccomment'>/// search parameters has been specified.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>fmt</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
+    <span class="doccomment">/// Return a string which will be appended to the query&#39;s URL given that at least one of the</span>
+    <span class="doccomment">/// search parameters has been specified.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fmt</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
 
-        <span class='kw'>let</span> <span class='ident'>arguments</span> <span class='op'>=</span> <span class='ident'>Has</span>::<span class='op'>&lt;</span><span class='ident'>SearchArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_ref</span>(<span class='self'>self</span>);
+        <span class="kw">let</span> <span class="ident">arguments</span> <span class="op">=</span> <span class="ident">Has</span>::<span class="op">&lt;</span><span class="ident">SearchArguments</span><span class="op">&gt;</span>::<span class="ident">get_ref</span>(<span class="self">self</span>);
 
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>arguments</span>.<span class='ident'>keywords</span>.<span class='ident'>is_empty</span>() {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;query={}&quot;</span>, <span class='ident'>arguments</span>.<span class='ident'>keywords</span>[<span class='number'>0</span>]));
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">arguments</span>.<span class="ident">keywords</span>.<span class="ident">is_empty</span>() {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;query={}&quot;</span>, <span class="ident">arguments</span>.<span class="ident">keywords</span>[<span class="number">0</span>]));
 
-            <span class='kw'>for</span> <span class='ident'>keyword</span> <span class='kw'>in</span> <span class='ident'>arguments</span>.<span class='ident'>keywords</span>.<span class='ident'>iter</span>().<span class='ident'>skip</span>(<span class='number'>1</span>) {
-                <span class='ident'>fmt</span>.<span class='ident'>push</span>(<span class='string'>&#39;+&#39;</span>);
-                <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>keyword</span>[..]);
+            <span class="kw">for</span> <span class="ident">keyword</span> <span class="kw">in</span> <span class="ident">arguments</span>.<span class="ident">keywords</span>.<span class="ident">iter</span>().<span class="ident">skip</span>(<span class="number">1</span>) {
+                <span class="ident">fmt</span>.<span class="ident">push</span>(<span class="string">&#39;+&#39;</span>);
+                <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">keyword</span>[..]);
             }
 
-            <span class='ident'>fmt</span>.<span class='ident'>push</span>(<span class='string'>&#39;&amp;&#39;</span>);
+            <span class="ident">fmt</span>.<span class="ident">push</span>(<span class="string">&#39;&amp;&#39;</span>);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>per_page</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;per_page={}&amp;&quot;</span>, <span class='ident'>n</span>));
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">per_page</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;per_page={}&amp;&quot;</span>, <span class="ident">n</span>));
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>page</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;page={}&amp;&quot;</span>, <span class='ident'>n</span>));
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">page</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;page={}&amp;&quot;</span>, <span class="ident">n</span>));
         }
 
-        <span class='kw'>if</span> <span class='ident'>fmt</span>.<span class='ident'>pop</span>().<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='ident'>fmt</span>)
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>None</span>
+        <span class="kw">if</span> <span class="ident">fmt</span>.<span class="ident">pop</span>().<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">fmt</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
         }
     }
 }
 
-<span class='doccomment'>/// Data parameters implemented by data fetching queries.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data)</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>DataParameters</span>: <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Specify the number of rows of data to be returned by this query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Note that this is identical to the `limit` parameter.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>rows</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>rows</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>);
-        <span class='self'>self</span>
+<span class="doccomment">/// Data parameters implemented by data fetching queries.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DataParameters</span>: <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Specify the number of rows of data to be returned by this query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that this is identical to the `limit` parameter.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">rows</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">rows</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify the number of rows of data to be returned by this query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Note that this is identical to the `rows` parameter.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>limit</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>limit</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify the number of rows of data to be returned by this query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that this is identical to the `rows` parameter.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">limit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">limit</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify the ordering of the data.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// More specifically, it can be precised whether the data should be returned with dates in an</span>
-    <span class='doccomment'>/// ascending (`Order::asc`) or descending (`Order::desc`) order.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>order</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>order</span>: <span class='ident'>Order</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>order</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>order</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify the ordering of the data.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More specifically, it can be precised whether the data should be returned with dates in an</span>
+    <span class="doccomment">/// ascending (`Order::asc`) or descending (`Order::desc`) order.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">order</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Order</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">order</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">order</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify whether the data should be returned at a smaller frequency than avaiable.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>collapse</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>collapse</span>: <span class='ident'>Frequency</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>collapse</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>collapse</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify whether the data should be returned at a smaller frequency than avaiable.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">collapse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">collapse</span>: <span class="ident">Frequency</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">collapse</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">collapse</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify how the data should be transformed by Quandl&#39;s server before being returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>transform</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>transform</span>: <span class='ident'>Transform</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>transform</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>transform</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify how the data should be transformed by Quandl&#39;s server before being returned.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">transform</span>: <span class="ident">Transform</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">transform</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">transform</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify the oldest data point to be returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Note that if the date makes no sense, the error will be reported by the Quandl server</span>
-    <span class='doccomment'>/// (wasting one api call in the process).</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>end_date</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>year</span>: <span class='ident'>u16</span>, <span class='ident'>month</span>: <span class='ident'>u8</span>, <span class='ident'>day</span>: <span class='ident'>u8</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>end_date</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>((<span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>));
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify the oldest data point to be returned.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that if the date makes no sense, the error will be reported by the Quandl server</span>
+    <span class="doccomment">/// (wasting one api call in the process).</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">end_date</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">year</span>: <span class="ident">u16</span>, <span class="ident">month</span>: <span class="ident">u8</span>, <span class="ident">day</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">end_date</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>));
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify the earliest data point to be returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Note that if the date makes no sense, the error will be reported by the Quandl server</span>
-    <span class='doccomment'>/// (wasting one api call in the process).</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>start_date</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>year</span>: <span class='ident'>u16</span>, <span class='ident'>month</span>: <span class='ident'>u8</span>, <span class='ident'>day</span>: <span class='ident'>u8</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>start_date</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>((<span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>));
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify the earliest data point to be returned.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that if the date makes no sense, the error will be reported by the Quandl server</span>
+    <span class="doccomment">/// (wasting one api call in the process).</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">start_date</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">year</span>: <span class="ident">u16</span>, <span class="ident">month</span>: <span class="ident">u8</span>, <span class="ident">day</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">start_date</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>));
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Specify which column to be returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Note that the column 0, i.e. the &#39;date&#39; column, is always returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>column_index</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>index</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='self'>self</span>).<span class='ident'>column_index</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>index</span>);
-        <span class='self'>self</span>
+    <span class="doccomment">/// Specify which column to be returned.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that the column 0, i.e. the &#39;date&#39; column, is always returned.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">column_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="self">self</span>).<span class="ident">column_index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>);
+        <span class="self">self</span>
     }
 
-    <span class='doccomment'>/// Return a string which will be appended to the query&#39;s URL given that at least one of the</span>
-    <span class='doccomment'>/// data parameters has been specified.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>fmt</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
+    <span class="doccomment">/// Return a string which will be appended to the query&#39;s URL given that at least one of the</span>
+    <span class="doccomment">/// data parameters has been specified.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fmt</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
 
-        <span class='kw'>let</span> <span class='ident'>arguments</span> <span class='op'>=</span> <span class='ident'>Has</span>::<span class='op'>&lt;</span><span class='ident'>DataArguments</span><span class='op'>&gt;</span>::<span class='ident'>get_ref</span>(<span class='self'>self</span>);
+        <span class="kw">let</span> <span class="ident">arguments</span> <span class="op">=</span> <span class="ident">Has</span>::<span class="op">&lt;</span><span class="ident">DataArguments</span><span class="op">&gt;</span>::<span class="ident">get_ref</span>(<span class="self">self</span>);
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>rows</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;rows={}&amp;&quot;</span>, <span class='ident'>n</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">rows</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;rows={}&amp;&quot;</span>, <span class="ident">n</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>limit</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;limit={}&amp;&quot;</span>, <span class='ident'>n</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">limit</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;limit={}&amp;&quot;</span>, <span class="ident">n</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>order</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>order</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;order={:?}&amp;&quot;</span>, <span class='ident'>order</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">order</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">order</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;order={:?}&amp;&quot;</span>, <span class="ident">order</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>collapse</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>collapse</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;collapse={:?}&amp;&quot;</span>, <span class='ident'>collapse</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">collapse</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">collapse</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;collapse={:?}&amp;&quot;</span>, <span class="ident">collapse</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>transform</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>transform</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;transform={:?}&amp;&quot;</span>, <span class='ident'>transform</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">transform</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">transform</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;transform={:?}&amp;&quot;</span>, <span class="ident">transform</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>((<span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>)) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>end_date</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;end_date={:#04}-{:#02}-{:#02}&amp;&quot;</span>, <span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>));
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>)) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">end_date</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;end_date={:#04}-{:#02}-{:#02}&amp;&quot;</span>, <span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>));
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>((<span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>)) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>start_date</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;start_date={:#04}-{:#02}-{:#02}&amp;&quot;</span>, <span class='ident'>year</span>, <span class='ident'>month</span>, <span class='ident'>day</span>));
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>)) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">start_date</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;start_date={:#04}-{:#02}-{:#02}&amp;&quot;</span>, <span class="ident">year</span>, <span class="ident">month</span>, <span class="ident">day</span>));
         }
 
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>index</span>) <span class='op'>=</span> <span class='ident'>arguments</span>.<span class='ident'>column_index</span> {
-            <span class='ident'>fmt</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;column_index={}&amp;&quot;</span>, <span class='ident'>index</span>)[..]);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">arguments</span>.<span class="ident">column_index</span> {
+            <span class="ident">fmt</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;column_index={}&amp;&quot;</span>, <span class="ident">index</span>)[..]);
         }
 
-        <span class='kw'>if</span> <span class='ident'>fmt</span>.<span class='ident'>pop</span>().<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='ident'>fmt</span>)
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>None</span>
+        <span class="kw">if</span> <span class="ident">fmt</span>.<span class="ident">pop</span>().<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">fmt</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
         }
     }
 }
@@ -548,6 +538,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -568,7 +560,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -579,11 +571,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "quandl_v3";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

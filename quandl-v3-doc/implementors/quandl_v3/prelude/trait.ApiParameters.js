@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors['quandl_v3'] = [];
+implementors["quandl_v3"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

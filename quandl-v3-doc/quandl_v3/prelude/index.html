@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `prelude` mod in crate `quandl_v3`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, prelude">
+
+    <title>quandl_v3::prelude - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Module prelude</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li><li><a href="#traits">Traits</a></li></ul></div><p class='location'><a href='../index.html'>quandl_v3</a></p><script>window.sidebarCurrent = {name: 'prelude', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>quandl_v3</a>::<wbr><a class="mod" href=''>prelude</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/quandl_v3/prelude.rs.html#1-27' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>This crate&#39;s public interface.</p>
+
+<p>This exclude error handling names to avoid needless conflicts with other crates (e.g.
+<code>std::result::Result</code>).</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.BatchQuery.html"
+                                  title='struct quandl_v3::prelude::BatchQuery'>BatchQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Builder pattern run multiple queries in batch.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.BatchQueryIterator.html"
+                                  title='struct quandl_v3::prelude::BatchQueryIterator'>BatchQueryIterator</a></td>
+                           <td class='docblock-short'>
+                                <p>Iterator returned by the <code>BatchQuery::run</code> method.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Code.html"
+                                  title='struct quandl_v3::prelude::Code'>Code</a></td>
+                           <td class='docblock-short'>
+                                <p>Data structure to hold the result of a code list query.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.CodeListQuery.html"
+                                  title='struct quandl_v3::prelude::CodeListQuery'>CodeListQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Query a list of dataset codes from a specific database.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DataAndMetadataQuery.html"
+                                  title='struct quandl_v3::prelude::DataAndMetadataQuery'>DataAndMetadataQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Query the data and metadata from a specific dataset.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DataQuery.html"
+                                  title='struct quandl_v3::prelude::DataQuery'>DataQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Query the data from a specific dataset.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatabaseList.html"
+                                  title='struct quandl_v3::prelude::DatabaseList'>DatabaseList</a></td>
+                           <td class='docblock-short'>
+                                <p>Data structure to hold the result of doing a search database query.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatabaseMetadata.html"
+                                  title='struct quandl_v3::prelude::DatabaseMetadata'>DatabaseMetadata</a></td>
+                           <td class='docblock-short'>
+                                <p>Hold the metadata associated to a specific database.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatabaseMetadataQuery.html"
+                                  title='struct quandl_v3::prelude::DatabaseMetadataQuery'>DatabaseMetadataQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Database metadata query.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatabaseSearch.html"
+                                  title='struct quandl_v3::prelude::DatabaseSearch'>DatabaseSearch</a></td>
+                           <td class='docblock-short'>
+                                <p>Query to search into a database metadata list.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatasetList.html"
+                                  title='struct quandl_v3::prelude::DatasetList'>DatasetList</a></td>
+                           <td class='docblock-short'>
+                                <p>Data structure to hold the result of a search dataset query.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatasetMetadata.html"
+                                  title='struct quandl_v3::prelude::DatasetMetadata'>DatasetMetadata</a></td>
+                           <td class='docblock-short'>
+                                <p>Hold the metadata associated to a specific dataset.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatasetMetadataQuery.html"
+                                  title='struct quandl_v3::prelude::DatasetMetadataQuery'>DatasetMetadataQuery</a></td>
+                           <td class='docblock-short'>
+                                <p>Dataset metadata query.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.DatasetSearch.html"
+                                  title='struct quandl_v3::prelude::DatasetSearch'>DatasetSearch</a></td>
+                           <td class='docblock-short'>
+                                <p>Query to search into a dataset metadata list.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.SearchMetadata.html"
+                                  title='struct quandl_v3::prelude::SearchMetadata'>SearchMetadata</a></td>
+                           <td class='docblock-short'>
+                                <p>Some queries, namely those which list datasets or databases metadata, often return some
+metadata about the search itself. This is a structure to hold that metadata.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Frequency.html"
+                                  title='enum quandl_v3::prelude::Frequency'>Frequency</a></td>
+                           <td class='docblock-short'>
+                                <p>Parameters to indicate the desired frequency. When you change the frequency of a dataset,
+Quandl returns the last observation for the given period.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Order.html"
+                                  title='enum quandl_v3::prelude::Order'>Order</a></td>
+                           <td class='docblock-short'>
+                                <p>Select the sort order with this enum. The default sort order is descending.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Transform.html"
+                                  title='enum quandl_v3::prelude::Transform'>Transform</a></td>
+                           <td class='docblock-short'>
+                                <p>Perform calculations on your data prior to downloading.</p>
+                           </td>
+                       </tr></table><h2 id='statics' class='section-header'><a href="#statics">Statics</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="static" href="static.QUANDL_API_URL.html"
+                                  title='static quandl_v3::prelude::QUANDL_API_URL'>QUANDL_API_URL</a></td>
+                           <td class='docblock-short'>
+                                <p>Quandl API URL used as the base URL for all queries.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.ApiCall.html"
+                                  title='trait quandl_v3::prelude::ApiCall'>ApiCall</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait allowing implementers to submit a request through the Quandl API.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.ApiParameters.html"
+                                  title='trait quandl_v3::prelude::ApiParameters'>ApiParameters</a></td>
+                           <td class='docblock-short'>
+                                <p>Api parameters implemented by all queries.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.DataParameters.html"
+                                  title='trait quandl_v3::prelude::DataParameters'>DataParameters</a></td>
+                           <td class='docblock-short'>
+                                <p>Data parameters implemented by data fetching queries.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.SearchParameters.html"
+                                  title='trait quandl_v3::prelude::SearchParameters'>SearchParameters</a></td>
+                           <td class='docblock-short'>
+                                <p>Search parameters implemented by search queries.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "quandl_v3";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

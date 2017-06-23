@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `BatchQuery` struct in crate `quandl_v3`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, BatchQuery">
+
+    <title>quandl_v3::prelude::BatchQuery - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct BatchQuery</p><div class="block items"><ul><li><a href="#methods">Methods</a></li></ul></div><p class='location'><a href='../index.html'>quandl_v3</a>::<wbr><a href='index.html'>prelude</a></p><script>window.sidebarCurrent = {name: 'BatchQuery', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>quandl_v3</a>::<wbr><a href='index.html'>prelude</a>::<wbr><a class="struct" href=''>BatchQuery</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/quandl_v3/batch_query.rs.html#23-33' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct BatchQuery&lt;A, T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../../serde/de/trait.DeserializeOwned.html" title="trait serde::de::DeserializeOwned">DeserializeOwned</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,<br>&nbsp;&nbsp;&nbsp;&nbsp;A: <a class="trait" href="../../quandl_v3/prelude/trait.ApiCall.html" title="trait quandl_v3::prelude::ApiCall">ApiCall</a>&lt;T&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,&nbsp;</span> { /* fields omitted */ }</pre><div class='docblock'><p>Builder pattern run multiple queries in batch.</p>
+
+<p>The data is downloaded from the Quandl servers asynchronously. It does so by returning an
+Iterator which return the <code>Result</code> from each individual query in the order they are fed to the
+<code>query</code> and <code>queries</code> methods.</p>
+
+<p>When batch downloading, it is important to keep Quandl&#39;s API limits in mind. Please read the
+documentation for methods <code>limit</code> and <code>concurrent_calls</code> for more information.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;A, T&gt; <a class="struct" href="../../quandl_v3/prelude/struct.BatchQuery.html" title="struct quandl_v3::prelude::BatchQuery">BatchQuery</a>&lt;A, T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../../serde/de/trait.DeserializeOwned.html" title="trait serde::de::DeserializeOwned">DeserializeOwned</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,<br>&nbsp;&nbsp;&nbsp;&nbsp;A: <a class="trait" href="../../quandl_v3/prelude/trait.ApiCall.html" title="trait quandl_v3::prelude::ApiCall">ApiCall</a>&lt;T&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,&nbsp;</span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/quandl_v3/batch_query.rs.html#35-242' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self</code></span></h4>
+<div class='docblock'><p>Construct a new (empty) BatchQuery with default state.</p>
+</div><h4 id='method.offset' class="method"><span id='offset.v' class='invisible'><code>fn <a href='#method.offset' class='fnname'>offset</a>(&amp;mut self, offset: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Assume that every API keys has already been used the specified number of times.</p>
+
+<p>This is an hackish way to send a big batch query underway immediately even if some API keys
+have been used a small number of times (e.g. for testing purposes). This is obviously
+suboptimal and a future version of this library might provide stateful API keys which hold
+information about their usage and can be saved/retrieved from disk to always be used as
+efficiently as possible.</p>
+</div><h4 id='method.limit' class="method"><span id='limit.v' class='invisible'><code>fn <a href='#method.limit' class='fnname'>limit</a>(&amp;mut self, limit: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Specify some download rate limits for this batch query.</p>
+
+<p>From the beginning of 2017, some heavy restrictions applies to non-premium API keys,
+namely:</p>
+
+<ul>
+<li>Up to 300 API calls can be made with a single key within 10 seconds.</li>
+<li>Up to 2,000 API calls can be made with a single key within 10 minutes (600 seconds).</li>
+<li>Up to 50,000 API calls can be made with a single key within a day (86,400 seconds).</li>
+</ul>
+
+<p>For premium keys the limits are as follow:</p>
+
+<ul>
+<li>Up to 5,000 API calls can be made with a single key within 10 minutes (600 seconds).</li>
+<li>Up to 720,000 API calls can be made with a single key within a day (86,400 seconds).</li>
+</ul>
+
+<p>Not using an API key at all yield the most restrictive access:</p>
+
+<ul>
+<li>Up to 20 API calls by 10 minutes (600 seconds).</li>
+<li>Up to 50 API calls within a day (86,400 seconds).</li>
+</ul>
+
+<p>This method allow to specify those limits in a future-proof fashion (the limits could
+change at any time and this library does not handle it for this reason).</p>
+
+<p>For example, if not using any key, you would use this method as follow:</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">quandl_v3</span>;
+
+<span class="kw">use</span> <span class="ident">quandl_v3</span>::<span class="prelude-ty">Result</span>;
+<span class="kw">use</span> <span class="ident">quandl_v3</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch_query</span> <span class="op">=</span> <span class="ident">BatchQuery</span>::<span class="ident">new</span>();
+
+    <span class="ident">batch_query</span>
+        .<span class="ident">query</span>(<span class="ident">DatabaseMetadataQuery</span>::<span class="ident">new</span>(<span class="string">&quot;ICE&quot;</span>))
+        .<span class="ident">query</span>(<span class="ident">DatabaseMetadataQuery</span>::<span class="ident">new</span>(<span class="string">&quot;WIKI&quot;</span>))
+        .<span class="ident">limit</span>(<span class="number">20</span>, <span class="number">600</span>)
+        .<span class="ident">limit</span>(<span class="number">50</span>, <span class="number">86_400</span>);
+
+    <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">Vec</span><span class="op">&lt;</span>_<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">batch_query</span>.<span class="ident">run</span>().<span class="ident">collect</span>();
+}</pre>
+</div><h4 id='method.query' class="method"><span id='query.v' class='invisible'><code>fn <a href='#method.query' class='fnname'>query</a>(&amp;mut self, query: A) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Add a single query to this batch.</p>
+</div><h4 id='method.queries' class="method"><span id='queries.v' class='invisible'><code>fn <a href='#method.queries' class='fnname'>queries</a>(&amp;mut self, queries: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>A<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Add a slice of queries to this batch.</p>
+</div><h4 id='method.threads' class="method"><span id='threads.v' class='invisible'><code>fn <a href='#method.threads' class='fnname'>threads</a>(&amp;mut self, threads: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Specify the maximum number of threads to use.</p>
+
+<p>By default the number of logical cores is used. The number of threads specified must be
+bigger than 0.</p>
+</div><h4 id='method.concurrent_calls' class="method"><span id='concurrent_calls.v' class='invisible'><code>fn <a href='#method.concurrent_calls' class='fnname'>concurrent_calls</a>(&amp;mut self) -&gt; &amp;mut Self</code></span></h4>
+<div class='docblock'><p>Whether to allow concurrent calls to the API with a single key.</p>
+
+<p>This usage of the Quandl API is forbidden for non-premium keys but allowed for premium
+users. Thus this method should only be called on your batch if you are strictly using
+premium keys.</p>
+</div><h4 id='method.run' class="method"><span id='run.v' class='invisible'><code>fn <a href='#method.run' class='fnname'>run</a>(self) -&gt; <a class="struct" href="../../quandl_v3/prelude/struct.BatchQueryIterator.html" title="struct quandl_v3::prelude::BatchQueryIterator">Iterator</a>&lt;<a class="type" href="../../quandl_v3/type.Result.html" title="type quandl_v3::Result">Result</a>&lt;T&gt;&gt;</code></span></h4>
+<div class='docblock'><p>Execute the batch query and return an iterator which asynchronously fetch the data.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "quandl_v3";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

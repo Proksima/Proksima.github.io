@@ -9,13 +9,15 @@
 
     <title>types.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -41,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -303,312 +305,268 @@
 <span id="260">260</span>
 <span id="261">261</span>
 <span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-</pre><pre class='rust '>
-<span class='doccomment'>/// Parameters to indicate the desired frequency. When you change the frequency of a dataset,</span>
-<span class='doccomment'>/// Quandl returns the last observation for the given period.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Frequency</span> {
-    <span class='doccomment'>/// Unspecified frequency. In a data query, will default to the frequency of the dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>none</span>,
+</pre><pre class="rust ">
+<span class="doccomment">/// Parameters to indicate the desired frequency. When you change the frequency of a dataset,</span>
+<span class="doccomment">/// Quandl returns the last observation for the given period.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Frequency</span> {
+    <span class="doccomment">/// Unspecified frequency. In a data query, will default to the frequency of the dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">none</span>,
 
-    <span class='doccomment'>/// Frequency of one data point every day.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>daily</span>,
+    <span class="doccomment">/// Frequency of one data point every day.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">daily</span>,
 
-    <span class='doccomment'>/// Frequency of one data point every week.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>weekly</span>,
+    <span class="doccomment">/// Frequency of one data point every week.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">weekly</span>,
 
-    <span class='doccomment'>/// Frequency of one data point every month.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>monthly</span>,
+    <span class="doccomment">/// Frequency of one data point every month.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">monthly</span>,
 
-    <span class='doccomment'>/// Frequency of one data point every 4 months (or 4 times a year).</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>quarterly</span>,
+    <span class="doccomment">/// Frequency of one data point every 4 months (or 4 times a year).</span>
+    <span class="doccomment">///</span>
+    <span class="ident">quarterly</span>,
 
-    <span class='doccomment'>/// Frequency of one data point every year.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>annual</span>
+    <span class="doccomment">/// Frequency of one data point every year.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">annual</span>
 }
 
-<span class='doccomment'>/// Select the sort order with this enum. The default sort order is descending.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Order</span> {
-    <span class='doccomment'>/// Ascending ordering, for time series this means the first entry is the earliest date.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>asc</span>,
+<span class="doccomment">/// Select the sort order with this enum. The default sort order is descending.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Order</span> {
+    <span class="doccomment">/// Ascending ordering, for time series this means the first entry is the earliest date.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">asc</span>,
 
-    <span class='doccomment'>/// Descending ordering, for time series this means the first entry if the latest date.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>desc</span>,
+    <span class="doccomment">/// Descending ordering, for time series this means the first entry if the latest date.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">desc</span>,
 }
 
-<span class='doccomment'>/// Perform calculations on your data prior to downloading.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Transform</span> {
-    <span class='doccomment'>/// No transformation, also the default.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>none</span>,
+<span class="doccomment">/// Perform calculations on your data prior to downloading.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Transform</span> {
+    <span class="doccomment">/// No transformation, also the default.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">none</span>,
 
-    <span class='doccomment'>/// Row-on-row change; a parameter that will transform the data to show the difference between</span>
-    <span class='doccomment'>/// days. Equivalent to `y&#39;[t] = y[t] - y[t - 1]`.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>diff</span>,
+    <span class="doccomment">/// Row-on-row change; a parameter that will transform the data to show the difference between</span>
+    <span class="doccomment">/// days. Equivalent to `y&#39;[t] = y[t] - y[t - 1]`.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">diff</span>,
 
-    <span class='doccomment'>/// Row-on-row percentage change; a parameter that will transform the data to show the</span>
-    <span class='doccomment'>/// difference between days divided by the previous day. Equivalent to `y&#39;[t] = (y[t] - y[t -</span>
-    <span class='doccomment'>/// 1]) / y[t - 1]`.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>rdiff</span>,
+    <span class="doccomment">/// Row-on-row percentage change; a parameter that will transform the data to show the</span>
+    <span class="doccomment">/// difference between days divided by the previous day. Equivalent to `y&#39;[t] = (y[t] - y[t -</span>
+    <span class="doccomment">/// 1]) / y[t - 1]`.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">rdiff</span>,
 
-    <span class='doccomment'>/// Row-on-row percentage change from latest value; a parameter that will transfrom the data to</span>
-    <span class='doccomment'>/// show the percentage difference between the latest value and all subsequent values (where</span>
-    <span class='doccomment'>/// `y[n]` is the latest observation). Equivalent to `y&#39;[t] = (y[n] - y[t]) / y[t]`.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>rdiff_from</span>,
+    <span class="doccomment">/// Row-on-row percentage change from latest value; a parameter that will transfrom the data to</span>
+    <span class="doccomment">/// show the percentage difference between the latest value and all subsequent values (where</span>
+    <span class="doccomment">/// `y[n]` is the latest observation). Equivalent to `y&#39;[t] = (y[n] - y[t]) / y[t]`.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">rdiff_from</span>,
 
-    <span class='doccomment'>/// Cumulative sum; a parameter that will calculate the sum of all preceding data returned.</span>
-    <span class='doccomment'>/// Equivalent to `y&#39;[t] = y[t] + y[t - 1] + ... + y[0]`.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>cumul</span>,
+    <span class="doccomment">/// Cumulative sum; a parameter that will calculate the sum of all preceding data returned.</span>
+    <span class="doccomment">/// Equivalent to `y&#39;[t] = y[t] + y[t - 1] + ... + y[0]`.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">cumul</span>,
 
-    <span class='doccomment'>/// Start at 100; a parameter that will normalize the data to the oldest datapoint returned.</span>
-    <span class='doccomment'>/// Equivalent to `y&#39;[t] = (y[t] / y[0]) * 100`.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>normalize</span>,
+    <span class="doccomment">/// Start at 100; a parameter that will normalize the data to the oldest datapoint returned.</span>
+    <span class="doccomment">/// Equivalent to `y&#39;[t] = (y[t] / y[0]) * 100`.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">normalize</span>,
 }
 
-<span class='doccomment'>/// Hold the metadata associated to a specific database.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#database-metadata)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatabaseMetadata</span> {
-    <span class='doccomment'>/// Quandl&#39;s numerical identifier for this database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>id</span>: <span class='ident'>usize</span>,
+<span class="doccomment">/// Hold the metadata associated to a specific database.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatabaseMetadata</span> {
+    <span class="doccomment">/// Quandl&#39;s numerical identifier for this database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// Name of the database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>name</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// Name of the database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// Database code; it is the code needed to construct any query on a specific database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>database_code</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// Database code; it is the code needed to construct any query on a specific database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// Description of the database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>description</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// Description of the database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// Number of datasets in the database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>datasets_count</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// Number of datasets in the database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">datasets_count</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// Number of time the database&#39;s content was downloaded.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>downloads</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// Number of time the database&#39;s content was downloaded.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">downloads</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// Whether or not this is a premium database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>premium</span>: <span class='ident'>bool</span>,
+    <span class="doccomment">/// Whether or not this is a premium database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">premium</span>: <span class="ident">bool</span>,
 
-    <span class='doccomment'>/// URL pointing to the logo of the database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>image</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// URL pointing to the logo of the database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">String</span>,
 }
 
-<span class='doccomment'>/// Hold the metadata associated to a specific dataset.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#metadata)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatasetMetadata</span> {
-    <span class='doccomment'>/// Quandl&#39;s numerical identifier for this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>id</span>: <span class='ident'>usize</span>,
+<span class="doccomment">/// Hold the metadata associated to a specific dataset.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatasetMetadata</span> {
+    <span class="doccomment">/// Quandl&#39;s numerical identifier for this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// The dataset code for the returned dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#quandl-codes)</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>dataset_code</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The dataset code for the returned dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">dataset_code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The code for the database this dataset belongs to.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#quandl-codes)</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>database_code</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The code for the database this dataset belongs to.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The title of this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>name</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The title of this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// An explanation of the contents of the data in this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>description</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// An explanation of the contents of the data in this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The last time the data in this dataset and metadata of this dataset was refreshed.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>refreshed_at</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The last time the data in this dataset and metadata of this dataset was refreshed.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">refreshed_at</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The most recent date of all available data points in this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>newest_available_date</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The most recent date of all available data points in this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">newest_available_date</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The earliest date of all available data points in this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>oldest_available_date</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The earliest date of all available data points in this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">oldest_available_date</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The titles for each column of data in this datset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>column_names</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class="doccomment">/// The titles for each column of data in this datset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">column_names</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// How often each data point in the resulting dataset is returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>frequency</span>: <span class='ident'>Frequency</span>,
+    <span class="doccomment">/// How often each data point in the resulting dataset is returned.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">frequency</span>: <span class="ident">Frequency</span>,
 
-    <span class='doccomment'>/// Whether or not this is a dataset from a premium database.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>premium</span>: <span class='ident'>bool</span>,
+    <span class="doccomment">/// Whether or not this is a dataset from a premium database.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">premium</span>: <span class="ident">bool</span>,
 
-    <span class='doccomment'>/// Quandl&#39;s numerical identifier for the database containing this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>database_id</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// Quandl&#39;s numerical identifier for the database containing this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">database_id</span>: <span class="ident">usize</span>,
 }
 
-<span class='doccomment'>/// Some queries, namely those which list datasets or databases metadata, often return some</span>
-<span class='doccomment'>/// metadata about the search itself. This is a structure to hold that metadata.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-search)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SearchMetadata</span> {
-    <span class='doccomment'>/// A string of the search keywords submitted formatted as `format!(&quot;{}+{}+...+{}&quot;, keyword_1,</span>
-    <span class='doccomment'>/// keyword_2, ..., keyword_n)`.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>query</span>: <span class='ident'>String</span>,
+<span class="doccomment">/// Some queries, namely those which list datasets or databases metadata, often return some</span>
+<span class="doccomment">/// metadata about the search itself. This is a structure to hold that metadata.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SearchMetadata</span> {
+    <span class="doccomment">/// A string of the search keywords submitted formatted as `format!(&quot;{}+{}+...+{}&quot;, keyword_1,</span>
+    <span class="doccomment">/// keyword_2, ..., keyword_n)`.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">query</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The number of search result per page.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>per_page</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// The number of search result per page.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">per_page</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// The current page of result that was returned by this query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>current_page</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// The current page of result that was returned by this query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">current_page</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// The number of the previous page, unless there is no previous page.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>prev_page</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+    <span class="doccomment">/// The number of the previous page, unless there is no previous page.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">prev_page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// The total number of pages that can be queried.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>total_pages</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// The total number of pages that can be queried.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">total_pages</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// The total number of search result returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>total_count</span>: <span class='ident'>usize</span>,
+    <span class="doccomment">/// The total number of search result returned.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">total_count</span>: <span class="ident">usize</span>,
 
-    <span class='doccomment'>/// The number of the next page, unless there is no next page.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>next_page</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+    <span class="doccomment">/// The number of the next page, unless there is no next page.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">next_page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// Index of the first result on the current page, with respect to the total number of results.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>current_first_item</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+    <span class="doccomment">/// Index of the first result on the current page, with respect to the total number of results.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">current_first_item</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// Index of the last result on the current page, with respect to the total number of results.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>current_last_item</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>,
+    <span class="doccomment">/// Index of the last result on the current page, with respect to the total number of results.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">current_last_item</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class='doccomment'>/// Data structure to hold the result of doing a search database query.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#database-list)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatabaseList</span> {
-    <span class='doccomment'>/// A vector containing the first page of databases&#39; metadata.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>databases</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>DatabaseMetadata</span><span class='op'>&gt;</span>,
+<span class="doccomment">/// Data structure to hold the result of doing a search database query.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatabaseList</span> {
+    <span class="doccomment">/// A vector containing the first page of databases&#39; metadata.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">databases</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">DatabaseMetadata</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// The search metadata associated with this listing.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>meta</span>: <span class='ident'>SearchMetadata</span>,
+    <span class="doccomment">/// The search metadata associated with this listing.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">meta</span>: <span class="ident">SearchMetadata</span>,
 }
 
-<span class='doccomment'>/// Data structure to hold the result of a search dataset query.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-search)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatasetList</span> {
-    <span class='doccomment'>/// A vector containing the first page of datasets&#39; metadata.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>datasets</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>DatasetMetadata</span><span class='op'>&gt;</span>,
+<span class="doccomment">/// Data structure to hold the result of a search dataset query.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatasetList</span> {
+    <span class="doccomment">/// A vector containing the first page of datasets&#39; metadata.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">datasets</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">DatasetMetadata</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// The search metadata associated with this listing.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>meta</span>: <span class='ident'>SearchMetadata</span>,
+    <span class="doccomment">/// The search metadata associated with this listing.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">meta</span>: <span class="ident">SearchMetadata</span>,
 }
 
-<span class='doccomment'>/// Data structure to hold the result of a code list query.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-list)</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// It should be noted that I slightly changed the meaning of a &quot;dataset list&quot; in this crate for</span>
-<span class='doccomment'>/// consistency with the `DatabaseList`. In this crate `DatasetList` and `DatabaseList` correspond</span>
-<span class='doccomment'>/// to Quandl&#39;s &quot;dataset search&quot; and &quot;database list&quot; respectively while `Vec&lt;Code&gt;` is Quandl&#39;s</span>
-<span class='doccomment'>/// equivalent of a &quot;dataset list&quot;.</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Code</span> {
-    <span class='doccomment'>/// The dataset code for the returned dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>dataset_code</span>: <span class='ident'>String</span>,
+<span class="doccomment">/// Data structure to hold the result of a code list query.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It should be noted that I slightly changed the meaning of a &quot;dataset list&quot; in this crate for</span>
+<span class="doccomment">/// consistency with the `DatabaseList`. In this crate `DatasetList` and `DatabaseList` correspond</span>
+<span class="doccomment">/// to Quandl&#39;s &quot;dataset search&quot; and &quot;database list&quot; respectively while `Vec&lt;Code&gt;` is Quandl&#39;s</span>
+<span class="doccomment">/// equivalent of a &quot;dataset list&quot;.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Code</span> {
+    <span class="doccomment">/// The dataset code for the returned dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">dataset_code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The code for the database this dataset belongs to.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>database_code</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The code for the database this dataset belongs to.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// The title of this dataset.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>name</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// The title of this dataset.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
 }
 </pre>
 </section>
@@ -634,6 +592,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -654,7 +614,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -665,11 +625,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "quandl_v3";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

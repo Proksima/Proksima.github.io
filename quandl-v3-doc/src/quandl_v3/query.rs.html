@@ -9,13 +9,15 @@
 
     <title>query.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -41,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -437,435 +439,403 @@
 <span id="394">394</span>
 <span id="395">395</span>
 <span id="396">396</span>
-<span id="397">397</span>
-<span id="398">398</span>
-<span id="399">399</span>
-<span id="400">400</span>
-<span id="401">401</span>
-<span id="402">402</span>
-<span id="403">403</span>
-<span id="404">404</span>
-<span id="405">405</span>
-<span id="406">406</span>
-<span id="407">407</span>
-<span id="408">408</span>
-<span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>BTreeMap</span>;
-<span class='kw'>use</span> <span class='ident'>rustc_serialize</span>::{<span class='ident'>Decodable</span>, <span class='ident'>json</span>};
-<span class='kw'>use</span> <span class='ident'>csv</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Cursor</span>;
 
-<span class='kw'>use</span> <span class='ident'>types</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>parameters</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>api_call</span>::<span class='ident'>ApiCall</span>;
+<span class="kw">use</span> <span class="ident">csv</span>;
 
-<span class='kw'>use</span> {<span class='prelude-ty'>Result</span>, <span class='ident'>Error</span>};
+<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>;
+<span class="kw">use</span> <span class="ident">serde_json</span>;
 
-<span class='doccomment'>/// Database metadata query.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#database-metadata)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatabaseMetadataQuery</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
+<span class="kw">use</span> <span class="ident">types</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">parameters</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">api_call</span>::<span class="ident">ApiCall</span>;
+
+<span class="kw">use</span> {<span class="prelude-ty">Result</span>, <span class="ident">Error</span>};
+
+<span class="doccomment">/// Database metadata query.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatabaseMetadataQuery</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
 }
 
-<span class='doccomment'>/// Dataset metadata query.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-metadata)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatasetMetadataQuery</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>dataset_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
+<span class="doccomment">/// Dataset metadata query.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatasetMetadataQuery</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">dataset_code</span>: <span class="ident">String</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
 }
 
-<span class='doccomment'>/// Query to search into a database metadata list.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#database-list)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatabaseSearch</span> {
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
-    <span class='ident'>search_arguments</span>: <span class='ident'>SearchArguments</span>,
+<span class="doccomment">/// Query to search into a database metadata list.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatabaseSearch</span> {
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
+    <span class="ident">search_arguments</span>: <span class="ident">SearchArguments</span>,
 }
 
-<span class='doccomment'>/// Query to search into a dataset metadata list.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-search)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DatasetSearch</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
-    <span class='ident'>search_arguments</span>: <span class='ident'>SearchArguments</span>,
+<span class="doccomment">/// Query to search into a dataset metadata list.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DatasetSearch</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
+    <span class="ident">search_arguments</span>: <span class="ident">SearchArguments</span>,
 }
 
-<span class='doccomment'>/// Query a list of dataset codes from a specific database.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#dataset-list)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>CodeListQuery</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
+<span class="doccomment">/// Query a list of dataset codes from a specific database.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CodeListQuery</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
 }
 
-<span class='doccomment'>/// Query the data from a specific dataset.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DataQuery</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>dataset_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>data_arguments</span>: <span class='ident'>DataArguments</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
+<span class="doccomment">/// Query the data from a specific dataset.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DataQuery</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">dataset_code</span>: <span class="ident">String</span>,
+    <span class="ident">data_arguments</span>: <span class="ident">DataArguments</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
 }
 
-<span class='doccomment'>/// Query the data and metadata from a specific dataset.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#data-and-metadata)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>DataAndMetadataQuery</span> {
-    <span class='ident'>database_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>dataset_code</span>: <span class='ident'>String</span>,
-    <span class='ident'>data_arguments</span>: <span class='ident'>DataArguments</span>,
-    <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>,
+<span class="doccomment">/// Query the data and metadata from a specific dataset.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DataAndMetadataQuery</span> {
+    <span class="kw">pub</span> <span class="ident">database_code</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">dataset_code</span>: <span class="ident">String</span>,
+    <span class="ident">data_arguments</span>: <span class="ident">DataArguments</span>,
+    <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>DatabaseMetadataQuery</span> {
-    <span class='doccomment'>/// Create a new database metadata query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DatabaseMetadataQuery</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DatabaseMetadataQuery</span> {
+    <span class="doccomment">/// Create a new database metadata query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DatabaseMetadataQuery</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>DatasetMetadataQuery</span> {
-    <span class='doccomment'>/// Create a new dataset metadata query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S1</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;</span>, <span class='ident'>S2</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S1</span>, <span class='ident'>dataset_code</span>: <span class='ident'>S2</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DatasetMetadataQuery</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>dataset_code</span>: <span class='ident'>dataset_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DatasetMetadataQuery</span> {
+    <span class="doccomment">/// Create a new dataset metadata query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S1</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S1</span>, <span class="ident">dataset_code</span>: <span class="ident">S2</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DatasetMetadataQuery</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">dataset_code</span>: <span class="ident">dataset_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>DatabaseSearch</span> {
-    <span class='doccomment'>/// Create a new database search query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DatabaseSearch</span> {
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
-            <span class='ident'>search_arguments</span>: <span class='ident'>SearchArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DatabaseSearch</span> {
+    <span class="doccomment">/// Create a new database search query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DatabaseSearch</span> {
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
+            <span class="ident">search_arguments</span>: <span class="ident">SearchArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>DatasetSearch</span> {
-    <span class='doccomment'>/// Create a new dataset search query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DatasetSearch</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
-            <span class='ident'>search_arguments</span>: <span class='ident'>SearchArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DatasetSearch</span> {
+    <span class="doccomment">/// Create a new dataset search query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DatasetSearch</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
+            <span class="ident">search_arguments</span>: <span class="ident">SearchArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>CodeListQuery</span> {
-    <span class='doccomment'>/// Create a new code list query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>CodeListQuery</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">CodeListQuery</span> {
+    <span class="doccomment">/// Create a new code list query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">CodeListQuery</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>DataQuery</span> {
-    <span class='doccomment'>/// Create a new data query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S1</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;</span>, <span class='ident'>S2</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S1</span>, <span class='ident'>dataset_code</span>: <span class='ident'>S2</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DataQuery</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>dataset_code</span>: <span class='ident'>dataset_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>data_arguments</span>: <span class='ident'>DataArguments</span>::<span class='ident'>default</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DataQuery</span> {
+    <span class="doccomment">/// Create a new data query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S1</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S1</span>, <span class="ident">dataset_code</span>: <span class="ident">S2</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DataQuery</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">dataset_code</span>: <span class="ident">dataset_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">data_arguments</span>: <span class="ident">DataArguments</span>::<span class="ident">default</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>DataAndMetadataQuery</span> {
-    <span class='doccomment'>/// Create a new data and metadata query.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>S1</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;</span>, <span class='ident'>S2</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='ident'>database_code</span>: <span class='ident'>S1</span>, <span class='ident'>dataset_code</span>: <span class='ident'>S2</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
-        <span class='ident'>DataAndMetadataQuery</span> {
-            <span class='ident'>database_code</span>: <span class='ident'>database_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>dataset_code</span>: <span class='ident'>dataset_code</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_string</span>(),
-            <span class='ident'>data_arguments</span>: <span class='ident'>DataArguments</span>::<span class='ident'>default</span>(),
-            <span class='ident'>request_arguments</span>: <span class='ident'>ApiArguments</span>::<span class='ident'>default</span>(),
+<span class="kw">impl</span> <span class="ident">DataAndMetadataQuery</span> {
+    <span class="doccomment">/// Create a new data and metadata query.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S1</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">database_code</span>: <span class="ident">S1</span>, <span class="ident">dataset_code</span>: <span class="ident">S2</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">DataAndMetadataQuery</span> {
+            <span class="ident">database_code</span>: <span class="ident">database_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">dataset_code</span>: <span class="ident">dataset_code</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>(),
+            <span class="ident">data_arguments</span>: <span class="ident">DataArguments</span>::<span class="ident">default</span>(),
+            <span class="ident">request_arguments</span>: <span class="ident">ApiArguments</span>::<span class="ident">default</span>(),
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>DatabaseMetadata</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>DatabaseMetadataQuery</span> {
-    <span class='kw'>fn</span> <span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>DatabaseMetadata</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>json_data</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>ApiCall</span>::<span class='op'>&lt;</span><span class='ident'>DatabaseMetadata</span><span class='op'>&gt;</span>::<span class='ident'>encoded_data</span>(<span class='self'>self</span>));
-
-            <span class='kw'>match</span> <span class='ident'>String</span>::<span class='ident'>from_utf8</span>(<span class='ident'>data</span>) {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>data</span>) <span class='op'>=&gt;</span> <span class='ident'>data</span>,
-                <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+<span class="kw">impl</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">DatabaseMetadata</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DatabaseMetadataQuery</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DatabaseMetadata</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">json_data</span> <span class="op">=</span> {
+            <span class="kw">match</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="macro">try</span><span class="macro">!</span>(<span class="ident">ApiCall</span>::<span class="op">&lt;</span><span class="ident">DatabaseMetadata</span><span class="op">&gt;</span>::<span class="ident">encoded_data</span>(<span class="self">self</span>))) {
+                <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=&gt;</span> <span class="ident">json</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())); }
             }
         };
 
-        <span class='kw'>match</span> <span class='ident'>json</span>::<span class='ident'>decode</span>::<span class='op'>&lt;</span><span class='ident'>BTreeMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>DatabaseMetadata</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>json_data</span>[..]) {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>tree</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>tree</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>1</span> {
-                    <span class='prelude-val'>Ok</span>(<span class='ident'>tree</span>.<span class='ident'>iter</span>().<span class='ident'>next</span>().<span class='ident'>unwrap</span>().<span class='number'>1</span>.<span class='ident'>clone</span>())
-                } <span class='kw'>else</span> {
-                    <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Expected a single element, got {}.&quot;</span>,
-                                                     <span class='ident'>tree</span>.<span class='ident'>len</span>())))
+        <span class="kw">match</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">DatabaseMetadata</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">json_data</span>[..]) {
+            <span class="prelude-val">Ok</span>(<span class="ident">tree</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">tree</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">tree</span>.<span class="ident">iter</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">clone</span>())
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Expected a single element, got {}.&quot;</span>,
+                                                     <span class="ident">tree</span>.<span class="ident">len</span>())))
                 }
             },
 
-            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())),
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/databases/{}.json&quot;</span>, <span class='self'>self</span>.<span class='ident'>database_code</span>))
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;/databases/{}.json&quot;</span>, <span class="self">self</span>.<span class="ident">database_code</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>)
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>)
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>DatasetMetadata</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>DatasetMetadataQuery</span> {
-    <span class='kw'>fn</span> <span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>DatasetMetadata</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>json_data</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>ApiCall</span>::<span class='op'>&lt;</span><span class='ident'>DatasetMetadata</span><span class='op'>&gt;</span>::<span class='ident'>encoded_data</span>(<span class='self'>self</span>));
-
-            <span class='kw'>match</span> <span class='ident'>String</span>::<span class='ident'>from_utf8</span>(<span class='ident'>data</span>) {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>data</span>) <span class='op'>=&gt;</span> <span class='ident'>data</span>,
-                <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+<span class="kw">impl</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">DatasetMetadata</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DatasetMetadataQuery</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DatasetMetadata</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">json_data</span> <span class="op">=</span> {
+            <span class="kw">match</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="macro">try</span><span class="macro">!</span>(<span class="ident">ApiCall</span>::<span class="op">&lt;</span><span class="ident">DatasetMetadata</span><span class="op">&gt;</span>::<span class="ident">encoded_data</span>(<span class="self">self</span>))) {
+                <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=&gt;</span> <span class="ident">json</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())); }
             }
         };
 
-        <span class='kw'>match</span> <span class='ident'>json</span>::<span class='ident'>decode</span>::<span class='op'>&lt;</span><span class='ident'>BTreeMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>DatasetMetadata</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>json_data</span>[..]) {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>tree</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>tree</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>1</span> {
-                    <span class='prelude-val'>Ok</span>(<span class='ident'>tree</span>.<span class='ident'>iter</span>().<span class='ident'>next</span>().<span class='ident'>unwrap</span>().<span class='number'>1</span>.<span class='ident'>clone</span>())
-                } <span class='kw'>else</span> {
-                    <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Expected a single element, got {}.&quot;</span>,
-                                                     <span class='ident'>tree</span>.<span class='ident'>len</span>())))
+        <span class="kw">match</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">DatasetMetadata</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">json_data</span>[..]) {
+            <span class="prelude-val">Ok</span>(<span class="ident">tree</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">tree</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">tree</span>.<span class="ident">iter</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">clone</span>())
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Expected a single element, got {}.&quot;</span>,
+                                                     <span class="ident">tree</span>.<span class="ident">len</span>())))
                 }
             },
 
-            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())),
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/datasets/{}/{}/metadata.json&quot;</span>, <span class='self'>self</span>.<span class='ident'>database_code</span>, <span class='self'>self</span>.<span class='ident'>dataset_code</span>))
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;/datasets/{}/{}/metadata.json&quot;</span>, <span class="self">self</span>.<span class="ident">database_code</span>, <span class="self">self</span>.<span class="ident">dataset_code</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>)
-    }
-}
-
-<span class='kw'>impl</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>DatabaseList</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>DatabaseSearch</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;/databases.json&quot;</span>))
-    }
-
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>arg_1</span> <span class='op'>=</span> <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
-        <span class='kw'>let</span> <span class='ident'>arg_2</span> <span class='op'>=</span> <span class='ident'>SearchParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
-
-        <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() <span class='op'>&amp;&amp;</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;{}&quot;</span>, <span class='ident'>arg_1</span>.<span class='ident'>unwrap</span>(), <span class='ident'>arg_2</span>.<span class='ident'>unwrap</span>()))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() {
-            <span class='ident'>arg_1</span>
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='ident'>arg_2</span>
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>None</span>
-        }
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>)
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>DatasetList</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>DatasetSearch</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;/datasets.json&quot;</span>))
+<span class="kw">impl</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">DatabaseList</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DatabaseSearch</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;/databases.json&quot;</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>arg_1</span> <span class='op'>=</span> <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
-        <span class='kw'>let</span> <span class='ident'>arg_2</span> <span class='op'>=</span> <span class='ident'>SearchParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">arg_1</span> <span class="op">=</span> <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">arg_2</span> <span class="op">=</span> <span class="ident">SearchParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
 
-        <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() <span class='op'>&amp;&amp;</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;{}&amp;database_code={}&quot;</span>, <span class='ident'>arg_1</span>.<span class='ident'>unwrap</span>(),
-                                                   <span class='ident'>arg_2</span>.<span class='ident'>unwrap</span>(),
-                                                   <span class='self'>self</span>.<span class='ident'>database_code</span>))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;database_code={}&quot;</span>, <span class='ident'>arg_1</span>.<span class='ident'>unwrap</span>(), <span class='self'>self</span>.<span class='ident'>database_code</span>))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;database_code={}&quot;</span>, <span class='ident'>arg_2</span>.<span class='ident'>unwrap</span>(), <span class='self'>self</span>.<span class='ident'>database_code</span>))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>None</span>
+        <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&amp;{}&quot;</span>, <span class="ident">arg_1</span>.<span class="ident">unwrap</span>(), <span class="ident">arg_2</span>.<span class="ident">unwrap</span>()))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() {
+            <span class="ident">arg_1</span>
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="ident">arg_2</span>
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Code</span><span class='op'>&gt;&gt;</span> <span class='kw'>for</span> <span class='ident'>CodeListQuery</span> {
-    <span class='kw'>fn</span> <span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Code</span><span class='op'>&gt;&gt;</span> {
-        <span class='kw'>use</span> <span class='ident'>csv</span>;
-        <span class='kw'>use</span> <span class='ident'>zip</span>::<span class='ident'>read</span>::<span class='ident'>ZipArchive</span>;
-        <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::{<span class='ident'>Cursor</span>, <span class='ident'>Read</span>};
+<span class="kw">impl</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">DatasetList</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DatasetSearch</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;/datasets.json&quot;</span>))
+    }
 
-        <span class='kw'>let</span> <span class='ident'>zipped_data</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>encoded_data</span>());
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">arg_1</span> <span class="op">=</span> <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">arg_2</span> <span class="op">=</span> <span class="ident">SearchParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
 
-        <span class='kw'>match</span> <span class='ident'>ZipArchive</span>::<span class='ident'>new</span>(<span class='ident'>Cursor</span>::<span class='ident'>new</span>(<span class='ident'>zipped_data</span>)) {
-            <span class='prelude-val'>Ok</span>(<span class='kw-2'>mut</span> <span class='ident'>files</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>csv</span> <span class='op'>=</span> {
-                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>csv</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
+        <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&amp;{}&amp;database_code={}&quot;</span>, <span class="ident">arg_1</span>.<span class="ident">unwrap</span>(),
+                                                   <span class="ident">arg_2</span>.<span class="ident">unwrap</span>(),
+                                                   <span class="self">self</span>.<span class="ident">database_code</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&amp;database_code={}&quot;</span>, <span class="ident">arg_1</span>.<span class="ident">unwrap</span>(), <span class="self">self</span>.<span class="ident">database_code</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&amp;database_code={}&quot;</span>, <span class="ident">arg_2</span>.<span class="ident">unwrap</span>(), <span class="self">self</span>.<span class="ident">database_code</span>))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
+        }
+    }
+}
 
-                    <span class='kw'>for</span> <span class='ident'>index</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='ident'>files</span>.<span class='ident'>len</span>() {
-                        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=</span> <span class='ident'>files</span>.<span class='ident'>by_index</span>(<span class='ident'>index</span>).<span class='ident'>unwrap</span>().<span class='ident'>read_to_string</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>csv</span>) {
-                            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>()));
+<span class="kw">impl</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Code</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">CodeListQuery</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Code</span><span class="op">&gt;&gt;</span> {
+        <span class="kw">use</span> <span class="ident">csv</span>;
+        <span class="kw">use</span> <span class="ident">zip</span>::<span class="ident">read</span>::<span class="ident">ZipArchive</span>;
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="ident">Cursor</span>, <span class="ident">Read</span>};
+
+        <span class="kw">let</span> <span class="ident">zipped_data</span> <span class="op">=</span> <span class="macro">try</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">encoded_data</span>());
+
+        <span class="kw">match</span> <span class="ident">ZipArchive</span>::<span class="ident">new</span>(<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="ident">zipped_data</span>)) {
+            <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">files</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">csv</span> <span class="op">=</span> {
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">csv</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+
+                    <span class="kw">for</span> <span class="ident">index</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">files</span>.<span class="ident">len</span>() {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">files</span>.<span class="ident">by_index</span>(<span class="ident">index</span>).<span class="ident">unwrap</span>().<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">csv</span>) {
+                            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>()));
                         }
                     }
 
-                    <span class='ident'>csv</span>
+                    <span class="ident">csv</span>
                 };
 
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>csv</span>::<span class='ident'>Reader</span>::<span class='ident'>from_string</span>(<span class='ident'>csv</span>);
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>codes</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Code</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">csv</span>::<span class="ident">Reader</span>::<span class="ident">from_reader</span>(<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="ident">csv</span>));
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">codes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Code</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
 
-                <span class='kw'>for</span> <span class='ident'>record</span> <span class='kw'>in</span> <span class='ident'>reader</span>.<span class='ident'>decode</span>() {
-                    <span class='kw'>let</span> <span class='ident'>record</span>: (<span class='ident'>String</span>, <span class='ident'>String</span>) <span class='op'>=</span> {
-                        <span class='kw'>match</span> <span class='ident'>record</span> {
-                            <span class='prelude-val'>Ok</span>(<span class='ident'>record</span>) <span class='op'>=&gt;</span> <span class='ident'>record</span>,
-                            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+                <span class="kw">for</span> <span class="ident">record</span> <span class="kw">in</span> <span class="ident">reader</span>.<span class="ident">deserialize</span>() {
+                    <span class="kw">let</span> <span class="ident">record</span>: (<span class="ident">String</span>, <span class="ident">String</span>) <span class="op">=</span> {
+                        <span class="kw">match</span> <span class="ident">record</span> {
+                            <span class="prelude-val">Ok</span>(<span class="ident">record</span>) <span class="op">=&gt;</span> <span class="ident">record</span>,
+                            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())),
                         }
                     };
 
-                    <span class='kw'>let</span> (<span class='ident'>database_code</span>, <span class='ident'>dataset_code</span>) <span class='op'>=</span> {
-                        <span class='kw'>let</span> <span class='ident'>pair</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>record</span>.<span class='number'>0</span>.<span class='ident'>split</span>(<span class='string'>&#39;/&#39;</span>).<span class='ident'>collect</span>();
+                    <span class="kw">let</span> (<span class="ident">database_code</span>, <span class="ident">dataset_code</span>) <span class="op">=</span> {
+                        <span class="kw">let</span> <span class="ident">pair</span>: <span class="ident">Vec</span><span class="op">&lt;</span>_<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">record</span>.<span class="number">0</span>.<span class="ident">split</span>(<span class="string">&#39;/&#39;</span>).<span class="ident">collect</span>();
 
-                        <span class='kw'>if</span> <span class='ident'>pair</span>.<span class='ident'>len</span>() <span class='op'>!=</span> <span class='number'>2</span> {
-                            <span class='kw'>let</span> <span class='ident'>error_message</span> <span class='op'>=</span> {
-                                <span class='string'>&quot;Invalid format for dataset codes in unzipped code list.&quot;</span>
+                        <span class="kw">if</span> <span class="ident">pair</span>.<span class="ident">len</span>() <span class="op">!=</span> <span class="number">2</span> {
+                            <span class="kw">let</span> <span class="ident">error_message</span> <span class="op">=</span> {
+                                <span class="string">&quot;Invalid format for dataset codes in unzipped code list.&quot;</span>
                             };
 
-                            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>error_message</span>.<span class='ident'>to_string</span>()));
+                            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">error_message</span>.<span class="ident">to_string</span>()));
                         }
 
-                        (<span class='ident'>pair</span>[<span class='number'>0</span>].<span class='ident'>to_string</span>(), <span class='ident'>pair</span>[<span class='number'>1</span>].<span class='ident'>to_string</span>())
+                        (<span class="ident">pair</span>[<span class="number">0</span>].<span class="ident">to_string</span>(), <span class="ident">pair</span>[<span class="number">1</span>].<span class="ident">to_string</span>())
                     };
 
-                    <span class='ident'>codes</span>.<span class='ident'>push</span>(<span class='ident'>Code</span> {
-                        <span class='ident'>database_code</span>: <span class='ident'>database_code</span>,
-                        <span class='ident'>dataset_code</span>: <span class='ident'>dataset_code</span>,
-                        <span class='ident'>name</span>: <span class='ident'>record</span>.<span class='number'>1</span>,
+                    <span class="ident">codes</span>.<span class="ident">push</span>(<span class="ident">Code</span> {
+                        <span class="ident">database_code</span>: <span class="ident">database_code</span>,
+                        <span class="ident">dataset_code</span>: <span class="ident">dataset_code</span>,
+                        <span class="ident">name</span>: <span class="ident">record</span>.<span class="number">1</span>,
                     });
                 }
 
-                <span class='prelude-val'>Ok</span>(<span class='ident'>codes</span>)
+                <span class="prelude-val">Ok</span>(<span class="ident">codes</span>)
             },
 
-            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())),
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/databases/{}/codes&quot;</span>, <span class='self'>self</span>.<span class='ident'>database_code</span>))
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;/databases/{}/codes&quot;</span>, <span class="self">self</span>.<span class="ident">database_code</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>)
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>)
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Decodable</span> <span class='op'>+</span> <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>ApiCall</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> <span class='kw'>for</span> <span class='ident'>DataQuery</span> {
-    <span class='kw'>fn</span> <span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>csv_data</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>ApiCall</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span>::<span class='ident'>encoded_data</span>(<span class='self'>self</span>));
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">DeserializeOwned</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">ApiCall</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">DataQuery</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span> {
+        <span class="kw">let</span> <span class="ident">csv_data</span> <span class="op">=</span> <span class="macro">try</span><span class="macro">!</span>(<span class="ident">ApiCall</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>::<span class="ident">encoded_data</span>(<span class="self">self</span>));
 
-            <span class='kw'>match</span> <span class='ident'>String</span>::<span class='ident'>from_utf8</span>(<span class='ident'>data</span>) {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>data</span>) <span class='op'>=&gt;</span> <span class='ident'>data</span>,
-                <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
+        <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> {
+                <span class="ident">csv</span>::<span class="ident">ReaderBuilder</span>::<span class="ident">new</span>()
+                    .<span class="ident">has_headers</span>(<span class="bool-val">false</span>)
+                    .<span class="ident">from_reader</span>(<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="ident">csv_data</span>))
+            };
+
+            <span class="kw">match</span> <span class="ident">reader</span>.<span class="ident">deserialize</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>() {
+                <span class="prelude-val">Ok</span>(<span class="ident">data</span>) <span class="op">=&gt;</span> <span class="ident">data</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="ident">e</span>.<span class="ident">to_string</span>())),
             }
         };
 
-        <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>csv</span>::<span class='ident'>Reader</span>::<span class='ident'>from_string</span>(<span class='ident'>csv_data</span>).<span class='ident'>has_headers</span>(<span class='boolval'>false</span>);
-            <span class='ident'>reader</span>.<span class='ident'>decode</span>().<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>csv</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>()
-        };
-
-        <span class='kw'>match</span> <span class='ident'>data</span> {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>data</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>data</span>),
-            <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='ident'>e</span>.<span class='ident'>to_string</span>())),
-        }
+        <span class="prelude-val">Ok</span>(<span class="ident">data</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_prefix</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/datasets/{}/{}/data.csv&quot;</span>, <span class='self'>self</span>.<span class='ident'>database_code</span>, <span class='self'>self</span>.<span class='ident'>dataset_code</span>))
+    <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;/datasets/{}/{}/data.csv&quot;</span>, <span class="self">self</span>.<span class="ident">database_code</span>, <span class="self">self</span>.<span class="ident">dataset_code</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fmt_arguments</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>arg_1</span> <span class='op'>=</span> <span class='ident'>ApiParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
-        <span class='kw'>let</span> <span class='ident'>arg_2</span> <span class='op'>=</span> <span class='ident'>DataParameters</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>);
+    <span class="kw">fn</span> <span class="ident">fmt_arguments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">arg_1</span> <span class="op">=</span> <span class="ident">ApiParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">arg_2</span> <span class="op">=</span> <span class="ident">DataParameters</span>::<span class="ident">fmt</span>(<span class="self">self</span>);
 
-        <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() <span class='op'>&amp;&amp;</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;exclude_column_names=true&amp;{}&amp;{}&quot;</span>, <span class='ident'>arg_1</span>.<span class='ident'>unwrap</span>(), <span class='ident'>arg_2</span>.<span class='ident'>unwrap</span>()))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_1</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;exclude_column_names=true&amp;{}&quot;</span>, <span class='ident'>arg_1</span>.<span class='ident'>unwrap</span>()))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>arg_2</span>.<span class='ident'>is_some</span>() {
-            <span class='prelude-val'>Some</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;exclude_column_names=true&amp;{}&quot;</span>, <span class='ident'>arg_2</span>.<span class='ident'>unwrap</span>()))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Some</span>(<span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;exclude_column_names=true&quot;</span>))
+        <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;exclude_column_names=true&amp;{}&amp;{}&quot;</span>, <span class="ident">arg_1</span>.<span class="ident">unwrap</span>(), <span class="ident">arg_2</span>.<span class="ident">unwrap</span>()))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_1</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;exclude_column_names=true&amp;{}&quot;</span>, <span class="ident">arg_1</span>.<span class="ident">unwrap</span>()))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">arg_2</span>.<span class="ident">is_some</span>() {
+            <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;exclude_column_names=true&amp;{}&quot;</span>, <span class="ident">arg_2</span>.<span class="ident">unwrap</span>()))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;exclude_column_names=true&quot;</span>))
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>DatabaseSearch</span> {}
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>DatasetSearch</span> {}
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>DatabaseMetadataQuery</span> {}
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>DatasetMetadataQuery</span> {}
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>CodeListQuery</span> {}
-<span class='kw'>impl</span> <span class='ident'>ApiParameters</span> <span class='kw'>for</span> <span class='ident'>DataQuery</span> {}
-<span class='kw'>impl</span> <span class='ident'>SearchParameters</span> <span class='kw'>for</span> <span class='ident'>DatabaseSearch</span> {}
-<span class='kw'>impl</span> <span class='ident'>SearchParameters</span> <span class='kw'>for</span> <span class='ident'>DatasetSearch</span> {}
-<span class='kw'>impl</span> <span class='ident'>DataParameters</span> <span class='kw'>for</span> <span class='ident'>DataQuery</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">DatabaseSearch</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">DatasetSearch</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">DatabaseMetadataQuery</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">DatasetMetadataQuery</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">CodeListQuery</span> {}
+<span class="kw">impl</span> <span class="ident">ApiParameters</span> <span class="kw">for</span> <span class="ident">DataQuery</span> {}
+<span class="kw">impl</span> <span class="ident">SearchParameters</span> <span class="kw">for</span> <span class="ident">DatabaseSearch</span> {}
+<span class="kw">impl</span> <span class="ident">SearchParameters</span> <span class="kw">for</span> <span class="ident">DatasetSearch</span> {}
+<span class="kw">impl</span> <span class="ident">DataParameters</span> <span class="kw">for</span> <span class="ident">DataQuery</span> {}
 
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatabaseSearch</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatabaseSearch</span>, <span class='ident'>SearchArguments</span>, <span class='ident'>search_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatasetSearch</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatasetSearch</span>, <span class='ident'>SearchArguments</span>, <span class='ident'>search_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatabaseMetadataQuery</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DatasetMetadataQuery</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>CodeListQuery</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DataQuery</span>, <span class='ident'>DataArguments</span>, <span class='ident'>data_arguments</span>);
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>DataQuery</span>, <span class='ident'>ApiArguments</span>, <span class='ident'>request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatabaseSearch</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatabaseSearch</span>, <span class="ident">SearchArguments</span>, <span class="ident">search_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatasetSearch</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatasetSearch</span>, <span class="ident">SearchArguments</span>, <span class="ident">search_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatabaseMetadataQuery</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DatasetMetadataQuery</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">CodeListQuery</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DataQuery</span>, <span class="ident">DataArguments</span>, <span class="ident">data_arguments</span>);
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">DataQuery</span>, <span class="ident">ApiArguments</span>, <span class="ident">request_arguments</span>);
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
@@ -890,6 +860,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -910,7 +882,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -921,11 +893,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "quandl_v3";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

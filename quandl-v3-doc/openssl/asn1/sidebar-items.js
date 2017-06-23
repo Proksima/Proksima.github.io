@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Asn1Time",""]]});
+initSidebarItems({"struct":[["Asn1String",""],["Asn1StringRef",""],["Asn1Time",""],["Asn1TimeRef",""]]});

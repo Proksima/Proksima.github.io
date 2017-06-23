@@ -4,18 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/dlevac/.multirust/toolchains/stable/cargo/registry/src/github.com-88ac128001ac3a9a/has-0.1.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/dlevac/.cargo/registry/src/github.com-1ecc6299db9ec823/has-0.1.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -41,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -141,103 +143,103 @@
 <span id="98"> 98</span>
 <span id="99"> 99</span>
 <span id="100">100</span>
-</pre><pre class='rust '>
-<span class='doccomment'>//! Introduce &#39;has a&#39; relationship as a trait to Rust.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! This crate offers an alternative for a missing feature of the Rust Programming Language. That</span>
-<span class='doccomment'>//! is, the possibility of traits holding state.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ## Simple example</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! #[macro_use]</span>
-<span class='doccomment'>//! extern crate has;</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! use has::*;</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! struct Apple;</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! trait ApplesContainer: HasMut&lt;Vec&lt;Apple&gt;&gt; {</span>
-<span class='doccomment'>//!     fn take_apple(&amp;mut self) -&gt; Option&lt;Apple&gt; {</span>
-<span class='doccomment'>//!         self.get_mut().pop()</span>
-<span class='doccomment'>//!     }</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     fn put_apple(&amp;mut self, apple: Apple) {</span>
-<span class='doccomment'>//!         self.get_mut().push(apple);</span>
-<span class='doccomment'>//!     }</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! #[derive(Default)]</span>
-<span class='doccomment'>//! struct Basket {</span>
-<span class='doccomment'>//!     pub apples: Vec&lt;Apple&gt;,</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! impl ApplesContainer for Basket {}</span>
-<span class='doccomment'>//! impl_has!(Basket, Vec&lt;Apple&gt;, apples);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! fn main() {</span>
-<span class='doccomment'>//!     let mut basket = Basket::default();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     basket.put_apple(Apple);</span>
-<span class='doccomment'>//!     basket.put_apple(Apple);</span>
-<span class='doccomment'>//!     basket.put_apple(Apple);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     basket.take_apple();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     assert_eq!(basket.apples.len(), 2);</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//!</span>
+</pre><pre class="rust ">
+<span class="doccomment">//! Introduce &#39;has a&#39; relationship as a trait to Rust.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate offers an alternative for a missing feature of the Rust Programming Language. That</span>
+<span class="doccomment">//! is, the possibility of traits holding state.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Simple example</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! #[macro_use]</span>
+<span class="doccomment">//! extern crate has;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! use has::*;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! struct Apple;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! trait ApplesContainer: HasMut&lt;Vec&lt;Apple&gt;&gt; {</span>
+<span class="doccomment">//!     fn take_apple(&amp;mut self) -&gt; Option&lt;Apple&gt; {</span>
+<span class="doccomment">//!         self.get_mut().pop()</span>
+<span class="doccomment">//!     }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     fn put_apple(&amp;mut self, apple: Apple) {</span>
+<span class="doccomment">//!         self.get_mut().push(apple);</span>
+<span class="doccomment">//!     }</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! #[derive(Default)]</span>
+<span class="doccomment">//! struct Basket {</span>
+<span class="doccomment">//!     pub apples: Vec&lt;Apple&gt;,</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! impl ApplesContainer for Basket {}</span>
+<span class="doccomment">//! impl_has!(Basket, Vec&lt;Apple&gt;, apples);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! fn main() {</span>
+<span class="doccomment">//!     let mut basket = Basket::default();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     basket.put_apple(Apple);</span>
+<span class="doccomment">//!     basket.put_apple(Apple);</span>
+<span class="doccomment">//!     basket.put_apple(Apple);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     basket.take_apple();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     assert_eq!(basket.apples.len(), 2);</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
 
-<span class='doccomment'>/// Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter</span>
-<span class='doccomment'>/// provided. This trait provides only a function to retrieve a non-mutable reference to the</span>
-<span class='doccomment'>/// contained object. If a mutable reference is desired instead, use `HasMut`.</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='kw'>fn</span> <span class='ident'>get_ref</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>T</span>;
+<span class="doccomment">/// Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter</span>
+<span class="doccomment">/// provided. This trait provides only a function to retrieve a non-mutable reference to the</span>
+<span class="doccomment">/// contained object. If a mutable reference is desired instead, use `HasMut`.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span>;
 }
 
-<span class='doccomment'>/// Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter</span>
-<span class='doccomment'>/// provided. This trait provides methods to retrieve either a mutable or immutable reference to</span>
-<span class='doccomment'>/// the contained object.</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>: <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='kw'>fn</span> <span class='ident'>get_mut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>T</span>;
+<span class="doccomment">/// Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter</span>
+<span class="doccomment">/// provided. This trait provides methods to retrieve either a mutable or immutable reference to</span>
+<span class="doccomment">/// the contained object.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>;
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>, <span class='ident'>H</span>: <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>H</span> {
-    <span class='kw'>fn</span> <span class='ident'>get_ref</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>T</span> {
-        <span class='ident'>Has</span>::<span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>::<span class='ident'>get_ref</span>(<span class='op'>*</span><span class='self'>self</span>)
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">H</span>: <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span> <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">H</span> {
+    <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
+        <span class="ident">Has</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>::<span class="ident">get_ref</span>(<span class="kw-2">*</span><span class="self">self</span>)
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>, <span class='ident'>H</span>: <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> <span class='ident'>Has</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>H</span> {
-    <span class='kw'>fn</span> <span class='ident'>get_ref</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>T</span> {
-        <span class='ident'>Has</span>::<span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>::<span class='ident'>get_ref</span>(<span class='op'>*</span><span class='self'>self</span>)
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">H</span>: <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span> <span class="ident">Has</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">H</span> {
+    <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
+        <span class="ident">Has</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>::<span class="ident">get_ref</span>(<span class="kw-2">*</span><span class="self">self</span>)
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>, <span class='ident'>H</span>: <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>H</span> {
-    <span class='kw'>fn</span> <span class='ident'>get_mut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>T</span> {
-        <span class='ident'>HasMut</span>::<span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>::<span class='ident'>get_mut</span>(<span class='op'>*</span><span class='self'>self</span>)
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">H</span>: <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span> <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">H</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+        <span class="ident">HasMut</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>::<span class="ident">get_mut</span>(<span class="kw-2">*</span><span class="self">self</span>)
     }
 }
 
-<span class='doccomment'>/// Macro to consisely implement `HasMut` for a struct. The macro takes as argument the struct</span>
-<span class='doccomment'>/// name, the type of the contained object and the identifier, within the struct, of the contained</span>
-<span class='doccomment'>/// object; in that order.</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>macro_export</span>]</span> <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>impl_has</span> {
-    ( <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>implementer</span>:<span class='ident'>ty</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>typ</span>:<span class='ident'>ty</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>identifier</span>:<span class='ident'>ident</span> ) <span class='op'>=&gt;</span> {
-        <span class='kw'>impl</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>crate</span>::<span class='ident'>Has</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>typ</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>implementer</span> {
-            <span class='kw'>fn</span> <span class='ident'>get_ref</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>typ</span> {
-                <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>identifier</span>
+<span class="doccomment">/// Macro to consisely implement `HasMut` for a struct. The macro takes as argument the struct</span>
+<span class="doccomment">/// name, the type of the contained object and the identifier, within the struct, of the contained</span>
+<span class="doccomment">/// object; in that order.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span> <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_has</span> {
+    ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">implementer</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">identifier</span>:<span class="ident">ident</span> ) <span class="op">=&gt;</span> {
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Has</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">implementer</span> {
+            <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> {
+                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">identifier</span>
             }
         }
 
-        <span class='kw'>impl</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>crate</span>::<span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>typ</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>implementer</span> {
-            <span class='kw'>fn</span> <span class='ident'>get_mut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>typ</span> {
-                <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>identifier</span>
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">HasMut</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">implementer</span> {
+            <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> {
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">identifier</span>
             }
         }
     }
@@ -266,6 +268,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -286,7 +290,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -297,11 +301,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "has";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

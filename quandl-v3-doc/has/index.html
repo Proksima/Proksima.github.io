@@ -9,13 +9,15 @@
 
     <title>has - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc mod">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -27,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'></p><script>window.sidebarCurrent = {name: 'has', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate has</p><div class="block items"><ul><li><a href="#macros">Macros</a></li><li><a href="#traits">Traits</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'has', ty: 'mod', relpath: '../'};</script>
     </nav>
 
     <nav class="sub">
@@ -41,90 +43,85 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>has</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/has/lib.rs.html#1-100' title='goto source code'>[src]</a></span></h1>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>has</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/has/lib.rs.html#1-100' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Introduce &#39;has a&#39; relationship as a trait to Rust.</p>
 
 <p>This crate offers an alternative for a missing feature of the Rust Programming Language. That
 is, the possibility of traits holding state.</p>
 
-<h2 id='simple-example' class='section-header'><a href='#simple-example'>Simple example</a></h2><pre class='rust rust-example-rendered'>
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>has</span>;
+<h2 id='simple-example' class='section-header'><a href='#simple-example'>Simple example</a></h2>
+<pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">has</span>;
 
-<span class='kw'>use</span> <span class='ident'>has</span>::<span class='op'>*</span>;
+<span class="kw">use</span> <span class="ident">has</span>::<span class="kw-2">*</span>;
 
-<span class='kw'>struct</span> <span class='ident'>Apple</span>;
+<span class="kw">struct</span> <span class="ident">Apple</span>;
 
-<span class='kw'>trait</span> <span class='ident'>ApplesContainer</span>: <span class='ident'>HasMut</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Apple</span><span class='op'>&gt;&gt;</span> {
-    <span class='kw'>fn</span> <span class='ident'>take_apple</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Apple</span><span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>get_mut</span>().<span class='ident'>pop</span>()
+<span class="kw">trait</span> <span class="ident">ApplesContainer</span>: <span class="ident">HasMut</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Apple</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">take_apple</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Apple</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">get_mut</span>().<span class="ident">pop</span>()
     }
 
-    <span class='kw'>fn</span> <span class='ident'>put_apple</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>apple</span>: <span class='ident'>Apple</span>) {
-        <span class='self'>self</span>.<span class='ident'>get_mut</span>().<span class='ident'>push</span>(<span class='ident'>apple</span>);
+    <span class="kw">fn</span> <span class="ident">put_apple</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">apple</span>: <span class="ident">Apple</span>) {
+        <span class="self">self</span>.<span class="ident">get_mut</span>().<span class="ident">push</span>(<span class="ident">apple</span>);
     }
 }
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Default</span>)]</span>
-<span class='kw'>struct</span> <span class='ident'>Basket</span> {
-    <span class='kw'>pub</span> <span class='ident'>apples</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Apple</span><span class='op'>&gt;</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Basket</span> {
+    <span class="kw">pub</span> <span class="ident">apples</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Apple</span><span class="op">&gt;</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>ApplesContainer</span> <span class='kw'>for</span> <span class='ident'>Basket</span> {}
-<span class='macro'>impl_has</span><span class='macro'>!</span>(<span class='ident'>Basket</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Apple</span><span class='op'>&gt;</span>, <span class='ident'>apples</span>);
+<span class="kw">impl</span> <span class="ident">ApplesContainer</span> <span class="kw">for</span> <span class="ident">Basket</span> {}
+<span class="macro">impl_has</span><span class="macro">!</span>(<span class="ident">Basket</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Apple</span><span class="op">&gt;</span>, <span class="ident">apples</span>);
 
-<span class='kw'>fn</span> <span class='ident'>main</span>() {
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>basket</span> <span class='op'>=</span> <span class='ident'>Basket</span>::<span class='ident'>default</span>();
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">basket</span> <span class="op">=</span> <span class="ident">Basket</span>::<span class="ident">default</span>();
 
-    <span class='ident'>basket</span>.<span class='ident'>put_apple</span>(<span class='ident'>Apple</span>);
-    <span class='ident'>basket</span>.<span class='ident'>put_apple</span>(<span class='ident'>Apple</span>);
-    <span class='ident'>basket</span>.<span class='ident'>put_apple</span>(<span class='ident'>Apple</span>);
+    <span class="ident">basket</span>.<span class="ident">put_apple</span>(<span class="ident">Apple</span>);
+    <span class="ident">basket</span>.<span class="ident">put_apple</span>(<span class="ident">Apple</span>);
+    <span class="ident">basket</span>.<span class="ident">put_apple</span>(<span class="ident">Apple</span>);
 
-    <span class='ident'>basket</span>.<span class='ident'>take_apple</span>();
+    <span class="ident">basket</span>.<span class="ident">take_apple</span>();
 
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>basket</span>.<span class='ident'>apples</span>.<span class='ident'>len</span>(), <span class='number'>2</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">basket</span>.<span class="ident">apples</span>.<span class="ident">len</span>(), <span class="number">2</span>);
 }</pre>
 </div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='macro' href='macro.impl_has!.html'
-                               title='has::impl_has!'>impl_has!</a></td>
-                        <td class='docblock short'>
-                             <p>Macro to consisely implement <code>HasMut</code> for a struct. The macro takes as argument the struct
+                       <tr class=' module-item'>
+                           <td><a class="macro" href="macro.impl_has.html"
+                                  title='macro has::impl_has'>impl_has</a></td>
+                           <td class='docblock-short'>
+                                <p>Macro to consisely implement <code>HasMut</code> for a struct. The macro takes as argument the struct
 name, the type of the contained object and the identifier, within the struct, of the contained
 object; in that order.</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Has.html'
-                               title='has::Has'>Has</a></td>
-                        <td class='docblock short'>
-                             <p>Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.Has.html"
+                                  title='trait has::Has'>Has</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter
 provided. This trait provides only a function to retrieve a non-mutable reference to the
 contained object. If a mutable reference is desired instead, use <code>HasMut</code>.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.HasMut.html'
-                               title='has::HasMut'>HasMut</a></td>
-                        <td class='docblock short'>
-                             <p>Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="trait" href="trait.HasMut.html"
+                                  title='trait has::HasMut'>HasMut</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait to model a &quot;has a&quot; relationship between implementing structs and the generic parameter
 provided. This trait provides methods to retrieve either a mutable or immutable reference to
 the contained object.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -147,6 +144,8 @@ the contained object.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -167,7 +166,7 @@ the contained object.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -178,11 +177,9 @@ the contained object.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "has";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

@@ -9,13 +9,15 @@
 
     <title>bzip2 - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc mod">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -27,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'></p><script>window.sidebarCurrent = {name: 'bzip2', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate bzip2</p><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'bzip2', ty: 'mod', relpath: '../'};</script>
     </nav>
 
     <nav class="sub">
@@ -41,12 +43,12 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>bzip2</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/bzip2/lib.rs.html#1-56' title='goto source code'>[src]</a></span></h1>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>bzip2</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/bzip2/lib.rs.html#1-56' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Bzip compression for Rust</p>
 
 <p>This library contains bindings to libbz2 to support bzip compression and
@@ -58,106 +60,89 @@ need.</p>
 <p>Access to the raw decompression/compression stream is also provided through
 the <code>raw</code> module which has a much closer interfact to libbz2.</p>
 
-<h1 id='example' class='section-header'><a href='#example'>Example</a></h1><pre class='rust rust-example-rendered'>
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>bzip2</span>::<span class='ident'>Compression</span>;
-<span class='kw'>use</span> <span class='ident'>bzip2</span>::<span class='ident'>read</span>::{<span class='ident'>BzEncoder</span>, <span class='ident'>BzDecoder</span>};
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">bzip2</span>::<span class="ident">Compression</span>;
+<span class="kw">use</span> <span class="ident">bzip2</span>::<span class="ident">read</span>::{<span class="ident">BzEncoder</span>, <span class="ident">BzDecoder</span>};
 
-<span class='comment'>// Round trip some bytes from a byte source, into a compressor, into a</span>
-<span class='comment'>// decompressor, and finally into a vector.</span>
-<span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='string'>&quot;Hello, World!&quot;</span>.<span class='ident'>as_bytes</span>();
-<span class='kw'>let</span> <span class='ident'>compressor</span> <span class='op'>=</span> <span class='ident'>BzEncoder</span>::<span class='ident'>new</span>(<span class='ident'>data</span>, <span class='ident'>Compression</span>::<span class='ident'>Best</span>);
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>decompressor</span> <span class='op'>=</span> <span class='ident'>BzDecoder</span>::<span class='ident'>new</span>(<span class='ident'>compressor</span>);
+<span class="comment">// Round trip some bytes from a byte source, into a compressor, into a</span>
+<span class="comment">// decompressor, and finally into a vector.</span>
+<span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;Hello, World!&quot;</span>.<span class="ident">as_bytes</span>();
+<span class="kw">let</span> <span class="ident">compressor</span> <span class="op">=</span> <span class="ident">BzEncoder</span>::<span class="ident">new</span>(<span class="ident">data</span>, <span class="ident">Compression</span>::<span class="ident">Best</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">decompressor</span> <span class="op">=</span> <span class="ident">BzDecoder</span>::<span class="ident">new</span>(<span class="ident">compressor</span>);
 
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>contents</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
-<span class='ident'>decompressor</span>.<span class='ident'>read_to_string</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>contents</span>).<span class='ident'>unwrap</span>();
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>contents</span>, <span class='string'>&quot;Hello, World!&quot;</span>);</pre>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">contents</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+<span class="ident">decompressor</span>.<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">contents</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">contents</span>, <span class="string">&quot;Hello, World!&quot;</span>);</pre>
 </div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='bufread/index.html'
-                               title='bzip2::bufread'>bufread</a></td>
-                        <td class='docblock short'>
-                             <p>I/O streams for wrapping <code>BufRead</code> types as encoders/decoders</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='read/index.html'
-                               title='bzip2::read'>read</a></td>
-                        <td class='docblock short'>
-                             <p>Reader-based compression/decompression streams</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='write/index.html'
-                               title='bzip2::write'>write</a></td>
-                        <td class='docblock short'>
-                             <p>Writer-based compression/decompression streams</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="bufread/index.html"
+                                  title='mod bzip2::bufread'>bufread</a></td>
+                           <td class='docblock-short'>
+                                <p>I/O streams for wrapping <code>BufRead</code> types as encoders/decoders</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="read/index.html"
+                                  title='mod bzip2::read'>read</a></td>
+                           <td class='docblock-short'>
+                                <p>Reader-based compression/decompression streams</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="write/index.html"
+                                  title='mod bzip2::write'>write</a></td>
+                           <td class='docblock-short'>
+                                <p>Writer-based compression/decompression streams</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Compress.html'
-                               title='bzip2::Compress'>Compress</a></td>
-                        <td class='docblock short'>
-                             <p>Representation of an in-memory compression stream.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Decompress.html'
-                               title='bzip2::Decompress'>Decompress</a></td>
-                        <td class='docblock short'>
-                             <p>Representation of an in-memory decompression stream.</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Compress.html"
+                                  title='struct bzip2::Compress'>Compress</a></td>
+                           <td class='docblock-short'>
+                                <p>Representation of an in-memory compression stream.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Decompress.html"
+                                  title='struct bzip2::Decompress'>Decompress</a></td>
+                           <td class='docblock-short'>
+                                <p>Representation of an in-memory decompression stream.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Action.html'
-                               title='bzip2::Action'>Action</a></td>
-                        <td class='docblock short'>
-                             <p>Possible actions to take on compression.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Compression.html'
-                               title='bzip2::Compression'>Compression</a></td>
-                        <td class='docblock short'>
-                             <p>When compressing data, the compression level can be specified by a value in
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Action.html"
+                                  title='enum bzip2::Action'>Action</a></td>
+                           <td class='docblock-short'>
+                                <p>Possible actions to take on compression.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Compression.html"
+                                  title='enum bzip2::Compression'>Compression</a></td>
+                           <td class='docblock-short'>
+                                <p>When compressing data, the compression level can be specified by a value in
 this enum.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Error.html'
-                               title='bzip2::Error'>Error</a></td>
-                        <td class='docblock short'>
-                             <p>Fatal errors encountered when compressing/decompressing bytes.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Status.html'
-                               title='bzip2::Status'>Status</a></td>
-                        <td class='docblock short'>
-                             <p>Result of compression or decompression</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Error.html"
+                                  title='enum bzip2::Error'>Error</a></td>
+                           <td class='docblock-short'>
+                                <p>Fatal errors encountered when compressing/decompressing bytes.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Status.html"
+                                  title='enum bzip2::Status'>Status</a></td>
+                           <td class='docblock-short'>
+                                <p>Result of compression or decompression</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -180,6 +165,8 @@ this enum.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -200,7 +187,7 @@ this enum.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -211,11 +198,9 @@ this enum.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "bzip2";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

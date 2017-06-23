@@ -9,13 +9,15 @@
 
     <title>csv::QuoteStyle - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc enum">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -27,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>csv</a></p><script>window.sidebarCurrent = {name: 'QuoteStyle', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Enum QuoteStyle</p><div class="block items"><ul><li><a href="#variants">Variants</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='index.html'>csv</a></p><script>window.sidebarCurrent = {name: 'QuoteStyle', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,31 +43,45 @@
         </form>
     </nav>
 
-    <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>csv</a>::<wbr><a class='enum' href=''>QuoteStyle</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-783' class='srclink' href='../src/csv/writer.rs.html#14-28' title='goto source code'>[src]</a></span></h1>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>csv</a>::<wbr><a class="enum" href=''>QuoteStyle</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/csv/lib.rs.html#209-233' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum QuoteStyle {
     Always,
     Necessary,
+    NonNumeric,
     Never,
+    // some variants omitted
 }</pre><div class='docblock'><p>The quoting style to use when writing CSV data.</p>
-</div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Always'><code>Always</code></td><td><div class='docblock'><p>This puts quotes around every field. Always.</p>
-</div></td></tr><tr><td id='variant.Necessary'><code>Necessary</code></td><td><div class='docblock'><p>This puts quotes around fields only when necessary.</p>
+</div><h2 id='variants' class='variants'>Variants</h2>
+<span id='variant.Always' class='variant'><span id='Always.v' class='invisible'><code>Always</code></span></span><div class='docblock'><p>This puts quotes around every field. Always.</p>
+</div><span id='variant.Necessary' class='variant'><span id='Necessary.v' class='invisible'><code>Necessary</code></span></span><div class='docblock'><p>This puts quotes around fields only when necessary.</p>
 
-<p>They are necessary when fields are empty or contain a quote, delimiter
-or record terminator.</p>
+<p>They are necessary when fields contain a quote, delimiter or record
+terminator. Quotes are also necessary when writing an empty record
+(which is indistinguishable from a record with one empty field).</p>
 
 <p>This is the default.</p>
-</div></td></tr><tr><td id='variant.Never'><code>Never</code></td><td><div class='docblock'><p>This <em>never</em> writes quotes.</p>
-
-<p>If a field requires quotes, then the writer will report an error.</p>
-</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='enum' href='../csv/enum.QuoteStyle.html' title='csv::QuoteStyle'>QuoteStyle</a></code></h3><div class='impl-items'></div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../csv/enum.QuoteStyle.html' title='csv::QuoteStyle'>QuoteStyle</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../csv/enum.QuoteStyle.html' title='csv::QuoteStyle'>QuoteStyle</a></code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
-</div></section>
+</div><span id='variant.NonNumeric' class='variant'><span id='NonNumeric.v' class='invisible'><code>NonNumeric</code></span></span><div class='docblock'><p>This puts quotes around all fields that are non-numeric. Namely, when
+writing a field that does not parse as a valid float or integer, then
+quotes will be used even if they aren&#39;t strictly necessary.</p>
+</div><span id='variant.Never' class='variant'><span id='Never.v' class='invisible'><code>Never</code></span></span><div class='docblock'><p>This <em>never</em> writes quotes, even if it would produce invalid CSV data.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/csv/lib.rs.html#208' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/csv/lib.rs.html#208' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/csv/lib.rs.html#208' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/csv/lib.rs.html#247-251' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class="enum" href="../csv/enum.QuoteStyle.html" title="enum csv::QuoteStyle">QuoteStyle</a></code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -88,6 +104,8 @@ or record terminator.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -108,7 +126,7 @@ or record terminator.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -119,11 +137,9 @@ or record terminator.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "csv";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

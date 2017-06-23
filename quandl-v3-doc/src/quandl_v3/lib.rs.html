@@ -9,13 +9,15 @@
 
     <title>lib.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -41,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -241,205 +243,203 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
-<span id="201">201</span>
-</pre><pre class='rust '>
-<span class='doccomment'>//! ## Rust bindings for Quandl v3 API.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! The goal of this crate is to offer a well documented, complete and easy to use interface to</span>
-<span class='doccomment'>//! Quandl&#39;s RESTful API.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! This crate uses the `rustc_serialize` crate extensively and thus suffers from some of its</span>
-<span class='doccomment'>//! limitation. Namely,</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! * When querying for the metadata of a dataset, the field `type` will be missing. This is due to</span>
-<span class='doccomment'>//!   `type` being a keyword in Rust. Use of this crate assumes knowledge of the layout of the</span>
-<span class='doccomment'>//!   queried data, so that field was not very important fortunately.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! * Most public enum&#39;s variants have non camel case names to match the naming convention of the</span>
-<span class='doccomment'>//!   API. The deserializer need the names to match to work properly, thus you will see</span>
-<span class='doccomment'>//!   `Order::asc` instead of the more readable `Order::Ascending`.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! Some other design choices of this crate includes</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! * No runtime checking of the query created. This crate makes it as hard as statically possible</span>
-<span class='doccomment'>//!   to create an invalid query. However, the query will be checked by the Quandl API directly. On</span>
-<span class='doccomment'>//!   the bright side, we forward Quandl&#39;s error messages/codes without pruning any information;</span>
-<span class='doccomment'>//!   and their error-reporting is very good.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! * The inclusion of a `batch_query` function that allows users to submit a bunch of query at the</span>
-<span class='doccomment'>//!   same time. The function returns an iterator which gives the benefit of multithreading</span>
-<span class='doccomment'>//!   downloads and asynchronicity which are indispensable when doing data mining.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! * We use the JSON Quandl API for everything but data queries as it often returns more</span>
-<span class='doccomment'>//!   information. When it comes to the data queries we use the CSV subset of the API as it is</span>
-<span class='doccomment'>//!   faster and allows to use the `rust-csv` crates which allow you to define your own structs to</span>
-<span class='doccomment'>//!   receive the data.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ### Simple example</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! extern crate quandl_v3;</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! use quandl_v3::Result;</span>
-<span class='doccomment'>//! use quandl_v3::prelude::*;</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! fn main() {</span>
-<span class='doccomment'>//!     let query = {</span>
-<span class='doccomment'>//!         let mut query = DataQuery::new(&quot;WIKI&quot;, &quot;AAPL&quot;);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!          query.order(Order::asc)</span>
-<span class='doccomment'>//!               .end_date(2016, 2, 29)</span>
-<span class='doccomment'>//!               .start_date(2016, 2, 1)</span>
-<span class='doccomment'>//!               .column_index(4);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!          query</span>
-<span class='doccomment'>//!     };</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     let response: Vec&lt;(String, f64)&gt; = query.send().unwrap();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     // Print the date and closing price for Apple&#39;s stock for the month of February 2016.</span>
-<span class='doccomment'>//!     for data in &amp;response {</span>
-<span class='doccomment'>//!         println!(&quot;{} - {}&quot;, data.0, data.1);</span>
-<span class='doccomment'>//!     }</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! This crate is written in the hope it will be useful. I am in no way affiliated to Quandl and</span>
-<span class='doccomment'>//! Quandl is not endorsing this crate in any way.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! Some of the documentation in this crate has been directly copied from Quandl&#39;s API</span>
-<span class='doccomment'>//! Documentation (which is made evident from the links to that documentation directly in this</span>
-<span class='doccomment'>//! crate&#39;s documentation). Those obiously remains the intellectual property of Quandl and were</span>
-<span class='doccomment'>//! paraphrased to make the use of this crate simpler.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! [Quandl&#39;s Terms of Use](https://www.quandl.com/about/terms)</span>
-<span class='doccomment'>//!</span>
+</pre><pre class="rust ">
+<span class="doccomment">//! ## Rust bindings for Quandl v3 API.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The goal of this crate is to offer a well documented, complete and easy to use interface to</span>
+<span class="doccomment">//! Quandl&#39;s RESTful API.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate uses the `rustc_serialize` crate extensively and thus suffers from some of its</span>
+<span class="doccomment">//! limitation. Namely,</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * When querying for the metadata of a dataset, the field `type` will be missing. This is due to</span>
+<span class="doccomment">//!   `type` being a keyword in Rust. Use of this crate assumes knowledge of the layout of the</span>
+<span class="doccomment">//!   queried data, so that field was not very important fortunately.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * Most public enum&#39;s variants have non camel case names to match the naming convention of the</span>
+<span class="doccomment">//!   API. The deserializer need the names to match to work properly, thus you will see</span>
+<span class="doccomment">//!   `Order::asc` instead of the more readable `Order::Ascending`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Some other design choices of this crate includes</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * No runtime checking of the query created. This crate makes it as hard as statically possible</span>
+<span class="doccomment">//!   to create an invalid query. However, the query will be checked by the Quandl API directly. On</span>
+<span class="doccomment">//!   the bright side, we forward Quandl&#39;s error messages/codes without pruning any information;</span>
+<span class="doccomment">//!   and their error-reporting is very good.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * The inclusion of a `batch_query` function that allows users to submit a bunch of query at the</span>
+<span class="doccomment">//!   same time. The function returns an iterator which gives the benefit of multithreading</span>
+<span class="doccomment">//!   downloads and asynchronicity which are indispensable when doing data mining.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * We use the JSON Quandl API for everything but data queries as it often returns more</span>
+<span class="doccomment">//!   information. When it comes to the data queries we use the CSV subset of the API as it is</span>
+<span class="doccomment">//!   faster and allows to use the `rust-csv` crates which allow you to define your own structs to</span>
+<span class="doccomment">//!   receive the data.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Simple example</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! extern crate quandl_v3;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! use quandl_v3::Result;</span>
+<span class="doccomment">//! use quandl_v3::prelude::*;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! fn main() {</span>
+<span class="doccomment">//!     let query = {</span>
+<span class="doccomment">//!         let mut query = DataQuery::new(&quot;WIKI&quot;, &quot;AAPL&quot;);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!          query.order(Order::asc)</span>
+<span class="doccomment">//!               .end_date(2016, 2, 29)</span>
+<span class="doccomment">//!               .start_date(2016, 2, 1)</span>
+<span class="doccomment">//!               .column_index(4);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!          query</span>
+<span class="doccomment">//!     };</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     let response: Vec&lt;(String, f64)&gt; = query.send().unwrap();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     // Print the date and closing price for Apple&#39;s stock for the month of February 2016.</span>
+<span class="doccomment">//!     for data in &amp;response {</span>
+<span class="doccomment">//!         println!(&quot;{} - {}&quot;, data.0, data.1);</span>
+<span class="doccomment">//!     }</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate is written in the hope it will be useful. I am in no way affiliated to Quandl and</span>
+<span class="doccomment">//! Quandl is not endorsing this crate in any way.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Some of the documentation in this crate has been directly copied from Quandl&#39;s API</span>
+<span class="doccomment">//! Documentation (which is made evident from the links to that documentation directly in this</span>
+<span class="doccomment">//! crate&#39;s documentation). Those obiously remains the intellectual property of Quandl and were</span>
+<span class="doccomment">//! paraphrased to make the use of this crate simpler.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [Quandl&#39;s Terms of Use](https://www.quandl.com/about/terms)</span>
+<span class="doccomment">//!</span>
 
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>zip</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>csv</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>hyper</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>has</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">zip</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">csv</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">reqwest</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">num_cpus</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">has</span>;
 
-<span class='kw'>mod</span> <span class='ident'>types</span>;
-<span class='kw'>mod</span> <span class='ident'>query</span>;
-<span class='kw'>mod</span> <span class='ident'>api_call</span>;
-<span class='kw'>mod</span> <span class='ident'>download</span>;
-<span class='kw'>mod</span> <span class='ident'>parameters</span>;
-<span class='kw'>mod</span> <span class='ident'>batch_query</span>;
+<span class="kw">mod</span> <span class="ident">types</span>;
+<span class="kw">mod</span> <span class="ident">query</span>;
+<span class="kw">mod</span> <span class="ident">api_call</span>;
+<span class="kw">mod</span> <span class="ident">download</span>;
+<span class="kw">mod</span> <span class="ident">parameters</span>;
+<span class="kw">mod</span> <span class="ident">batch_query</span>;
 
-<span class='doccomment'>/// This crate&#39;s public interface.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// This exclude error handling names to avoid needless conflicts with other crates (e.g.</span>
-<span class='doccomment'>/// `std::result::Result`).</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>prelude</span>;
+<span class="doccomment">/// This crate&#39;s public interface.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This exclude error handling names to avoid needless conflicts with other crates (e.g.</span>
+<span class="doccomment">/// `std::result::Result`).</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span>;
 
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>BTreeMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
 
-<span class='doccomment'>/// Crate-wide return type for functions which may fail.</span>
-<span class='doccomment'>///</span>
-<span class='kw'>pub</span> <span class='kw'>type</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>result</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+<span class="doccomment">/// Crate-wide return type for functions which may fail.</span>
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-<span class='doccomment'>/// Struct for storing a Quandl API error response as-is.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#quandl-errors)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ApiErrorResponse</span> {
-    <span class='doccomment'>/// This field contains more specific information about what went wrong. For example, it could</span>
-    <span class='doccomment'>/// inform you that a `start_date` is outside a valid range.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>errors</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BTreeMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
+<span class="doccomment">/// Struct for storing a Quandl API error response as-is.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApiErrorResponse</span> {
+    <span class="doccomment">/// This field contains more specific information about what went wrong. For example, it could</span>
+    <span class="doccomment">/// inform you that a `start_date` is outside a valid range.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">errors</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
 
-    <span class='doccomment'>/// Hold more generic failure information.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>quandl_error</span>: <span class='ident'>QuandlError</span>,
+    <span class="doccomment">/// Hold more generic failure information.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">quandl_error</span>: <span class="ident">QuandlError</span>,
 }
 
-<span class='doccomment'>/// Struct holding Quandl&#39;s error code and corresponding message.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// [Quandl API Reference](https://www.quandl.com/docs/api#quandl-errors)</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>QuandlError</span> {
-    <span class='doccomment'>/// Quandl-specific error code.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>code</span>: <span class='ident'>String</span>,
+<span class="doccomment">/// Struct holding Quandl&#39;s error code and corresponding message.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QuandlError</span> {
+    <span class="doccomment">/// Quandl-specific error code.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">code</span>: <span class="ident">String</span>,
 
-    <span class='doccomment'>/// Quandl&#39;s generic error message matching the above error code.</span>
-    <span class='doccomment'>///</span>
-    <span class='kw'>pub</span> <span class='ident'>message</span>: <span class='ident'>String</span>,
+    <span class="doccomment">/// Quandl&#39;s generic error message matching the above error code.</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="ident">message</span>: <span class="ident">String</span>,
 }
 
-<span class='doccomment'>/// Crate-wide error value. This enumerate the only four possible source of failures in this crate.</span>
-<span class='doccomment'>///</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Error</span> {
-    <span class='doccomment'>/// Is returned when Quandl&#39;s reply to a query with an error. The contained `ApiErrorResponse`</span>
-    <span class='doccomment'>/// contains very verbose information about what went wrong with any specific query.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>ApiCallFailed</span>(<span class='ident'>ApiErrorResponse</span>),
+<span class="doccomment">/// Crate-wide error value. This enumerate the only four possible source of failures in this crate.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
+    <span class="doccomment">/// Is returned when Quandl&#39;s reply to a query with an error. The contained `ApiErrorResponse`</span>
+    <span class="doccomment">/// contains very verbose information about what went wrong with any specific query.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">ApiCallFailed</span>(<span class="ident">ApiErrorResponse</span>),
 
-    <span class='doccomment'>/// Is returned when a problem occurs while exchanging informaiton with the Quandl&#39;s servers.</span>
-    <span class='doccomment'>/// It could mean the Internet connection was lost, that the remote server closed the</span>
-    <span class='doccomment'>/// connection unexpectedly, etc.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Unfortunately, the current implementation for network connection (hyper) has very weak</span>
-    <span class='doccomment'>/// error reporting and thus might leave the user confused as to why such an error is returned.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>DownloadFailed</span>(<span class='ident'>String</span>),
+    <span class="doccomment">/// Is returned when a problem occurs while exchanging informaiton with the Quandl&#39;s servers.</span>
+    <span class="doccomment">/// It could mean the Internet connection was lost, that the remote server closed the</span>
+    <span class="doccomment">/// connection unexpectedly, etc.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Unfortunately, the current implementation for network connection (hyper) has very weak</span>
+    <span class="doccomment">/// error reporting and thus might leave the user confused as to why such an error is returned.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">DownloadFailed</span>(<span class="ident">String</span>),
 
-    <span class='doccomment'>/// Is returned when the received value, assuming Quandl didn&#39;t respond with an error and that</span>
-    <span class='doccomment'>/// there was no download error, breaks one of the parsers&#39; assumption. Most of the time it</span>
-    <span class='doccomment'>/// would be an error from `rustc_serialize` (which also does not report very meaningful errors</span>
-    <span class='doccomment'>/// unfortunately) or it could also be a custom message from this library for data which didn&#39;t</span>
-    <span class='doccomment'>/// met the format deserializable by the `rustc_serialize` crate.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>ParsingFailed</span>(<span class='ident'>String</span>),
+    <span class="doccomment">/// Is returned when the received value, assuming Quandl didn&#39;t respond with an error and that</span>
+    <span class="doccomment">/// there was no download error, breaks one of the parsers&#39; assumption. Most of the time it</span>
+    <span class="doccomment">/// would be an error from `rustc_serialize` (which also does not report very meaningful errors</span>
+    <span class="doccomment">/// unfortunately) or it could also be a custom message from this library for data which didn&#39;t</span>
+    <span class="doccomment">/// met the format deserializable by the `rustc_serialize` crate.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">ParsingFailed</span>(<span class="ident">String</span>),
 
-    <span class='doccomment'>/// Is returned when an I/O operation fails. This last error is highly system-dependant and</span>
-    <span class='doccomment'>/// again, the error message string returned are not always very verbose.</span>
-    <span class='doccomment'>///</span>
-    <span class='ident'>IoError</span>(<span class='ident'>String</span>),
+    <span class="doccomment">/// Is returned when an I/O operation fails. This last error is highly system-dependant and</span>
+    <span class="doccomment">/// again, the error message string returned are not always very verbose.</span>
+    <span class="doccomment">///</span>
+    <span class="ident">IoError</span>(<span class="ident">String</span>),
 }
 
-<span class='kw'>impl</span> ::<span class='ident'>std</span>::<span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='self'>self</span> {
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>ApiCallFailed</span>(_)  <span class='op'>=&gt;</span> <span class='string'>&quot;Quandl&#39;s server responded with an error.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>DownloadFailed</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;Download failed.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(_)  <span class='op'>=&gt;</span> <span class='string'>&quot;Parsing data failed.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>IoError</span>(_)        <span class='op'>=&gt;</span> <span class='string'>&quot;Underlying system I/O error.&quot;</span>,
+<span class="kw">impl</span> ::<span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">ApiCallFailed</span>(_)  <span class="op">=&gt;</span> <span class="string">&quot;Quandl&#39;s server responded with an error.&quot;</span>,
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">DownloadFailed</span>(_) <span class="op">=&gt;</span> <span class="string">&quot;Download failed.&quot;</span>,
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(_)  <span class="op">=&gt;</span> <span class="string">&quot;Parsing data failed.&quot;</span>,
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">IoError</span>(_)        <span class="op">=&gt;</span> <span class="string">&quot;Underlying system I/O error.&quot;</span>,
         }
     }
 }
 
-<span class='kw'>impl</span> ::<span class='ident'>std</span>::<span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> ::<span class='ident'>std</span>::<span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> ::<span class='ident'>std</span>::<span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='self'>self</span> {
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>ApiCallFailed</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>e</span>.<span class='ident'>errors</span>.<span class='ident'>is_some</span>() <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ident'>e</span>.<span class='ident'>errors</span>.<span class='ident'>as_ref</span>().<span class='ident'>unwrap</span>().<span class='ident'>is_empty</span>() {
-                    <span class='kw'>let</span> (<span class='ident'>object</span>, <span class='ident'>what</span>) <span class='op'>=</span> <span class='ident'>e</span>.<span class='ident'>errors</span>.<span class='ident'>as_ref</span>().<span class='ident'>unwrap</span>().<span class='ident'>iter</span>().<span class='ident'>next</span>().<span class='ident'>unwrap</span>();
+<span class="kw">impl</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">ApiCallFailed</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">errors</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">e</span>.<span class="ident">errors</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">is_empty</span>() {
+                    <span class="kw">let</span> (<span class="ident">object</span>, <span class="ident">what</span>) <span class="op">=</span> <span class="ident">e</span>.<span class="ident">errors</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">iter</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
-                    <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, {
-                        <span class='ident'>what</span>.<span class='ident'>iter</span>().<span class='ident'>fold</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{} - &quot;</span>, <span class='ident'>object</span>), <span class='op'>|</span><span class='ident'>xs</span>, <span class='ident'>x</span><span class='op'>|</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{} {}&quot;</span>, <span class='ident'>xs</span>, <span class='ident'>x</span>))
+                    <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, {
+                        <span class="ident">what</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} - &quot;</span>, <span class="ident">object</span>), <span class="op">|</span><span class="ident">xs</span>, <span class="ident">x</span><span class="op">|</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} {}&quot;</span>, <span class="ident">xs</span>, <span class="ident">x</span>))
                     })
-                } <span class='kw'>else</span> {
-                    <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>e</span>.<span class='ident'>quandl_error</span>.<span class='ident'>message</span>)
+                } <span class="kw">else</span> {
+                    <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>.<span class="ident">quandl_error</span>.<span class="ident">message</span>)
                 }
             },
 
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>DownloadFailed</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;download failed with error &#39;{}&#39;.&quot;</span>, <span class='ident'>s</span>)
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">DownloadFailed</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;download failed with error &#39;{}&#39;.&quot;</span>, <span class="ident">s</span>)
             },
 
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>ParsingFailed</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;parsing encoded data failed with error &#39;{}&#39;.&quot;</span>, <span class='ident'>s</span>)
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">ParsingFailed</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;parsing encoded data failed with error &#39;{}&#39;.&quot;</span>, <span class="ident">s</span>)
             },
 
-            <span class='kw-2'>&amp;</span><span class='ident'>Error</span>::<span class='ident'>IoError</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;I/O operation failed with error &#39;{}&#39;.&quot;</span>, <span class='ident'>s</span>)
+            <span class="kw-2">&amp;</span><span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;I/O operation failed with error &#39;{}&#39;.&quot;</span>, <span class="ident">s</span>)
             },
         }
     }
@@ -468,6 +468,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -488,7 +490,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -499,11 +501,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "quandl_v3";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

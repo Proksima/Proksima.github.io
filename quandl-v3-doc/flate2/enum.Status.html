@@ -9,13 +9,15 @@
 
     <title>flate2::Status - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc enum">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -27,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>flate2</a></p><script>window.sidebarCurrent = {name: 'Status', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Enum Status</p><div class="block items"><ul><li><a href="#variants">Variants</a></li></ul></div><p class='location'><a href='index.html'>flate2</a></p><script>window.sidebarCurrent = {name: 'Status', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,24 +43,24 @@
         </form>
     </nav>
 
-    <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>flate2</a>::<wbr><a class='enum' href=''>Status</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-834' class='srclink' href='../src/flate2/mem.rs.html#43-67' title='goto source code'>[src]</a></span></h1>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>flate2</a>::<wbr><a class="enum" href=''>Status</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/flate2/mem.rs.html#113-137' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Status {
     Ok,
     BufError,
     StreamEnd,
 }</pre><div class='docblock'><p>Possible status results of compressing some data or successfully
 decompressing a block of data.</p>
-</div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Ok'><code>Ok</code></td><td><div class='docblock'><p>Indicates success.</p>
+</div><h2 id='variants' class='variants'>Variants</h2>
+<span id='variant.Ok' class='variant'><span id='Ok.v' class='invisible'><code>Ok</code></span></span><div class='docblock'><p>Indicates success.</p>
 
 <p>Means that more input may be needed but isn&#39;t available
 and/or there&#39; smore output to be written but the output buffer is full.</p>
-</div></td></tr><tr><td id='variant.BufError'><code>BufError</code></td><td><div class='docblock'><p>Indicates that forward progress is not possible due to input or output
+</div><span id='variant.BufError' class='variant'><span id='BufError.v' class='invisible'><code>BufError</code></span></span><div class='docblock'><p>Indicates that forward progress is not possible due to input or output
 buffers being empty.</p>
 
 <p>For compression it means the input buffer needs some more data or the
@@ -67,12 +69,12 @@ output buffer needs to be freed up before trying again.</p>
 <p>For decompression this means that more input is needed to continue or
 the output buffer isn&#39;t large enough to contain the result. The function
 can be called again after fixing both.</p>
-</div></td></tr><tr><td id='variant.StreamEnd'><code>StreamEnd</code></td><td><div class='docblock'><p>Indicates that all input has been consumed and all output bytes have
+</div><span id='variant.StreamEnd' class='variant'><span id='StreamEnd.v' class='invisible'><code>StreamEnd</code></span></span><div class='docblock'><p>Indicates that all input has been consumed and all output bytes have
 been written. Decompression/compression should not be called again.</p>
 
 <p>For decompression with zlib streams the adler-32 of the decompressed
 data has also been verified.</p>
-</div></td></tr></table></section>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -95,6 +97,8 @@ data has also been verified.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -115,7 +119,7 @@ data has also been verified.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -126,11 +130,9 @@ data has also been verified.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "flate2";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>
